@@ -7,7 +7,7 @@ export const useVirtualList = (options: VirtualListOptions) => {
 
   const start = useMemo(
     () => Math.max(0, Math.floor(scrollTop / itemHeight) - renderAhead / 2),
-    [scrollTop, itemHeight]
+    [scrollTop, itemHeight, renderAhead]
   );
 
   const visibleNodeList = useMemo(() => {
@@ -25,5 +25,6 @@ export const useVirtualList = (options: VirtualListOptions) => {
     });
   };
 
-  return { visibleNodeList, scrollTop, handleScroll };
+  const offsetY = useMemo(() => start * itemHeight, [start, itemHeight]);
+  return { visibleNodeList, offsetY, start, handleScroll };
 };

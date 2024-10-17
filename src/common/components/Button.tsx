@@ -6,11 +6,18 @@ type ButtonVariant = 'filled' | 'outlined' | 'text';
 interface ButtonProps {
   variant: ButtonVariant;
   children: ReactNode;
+  rounded?: boolean;
+  onClick: () => void;
 }
 
-const Button = ({ children, variant }: ButtonProps) => {
+const Button = ({
+  children,
+  variant,
+  rounded = false,
+  onClick,
+}: ButtonProps) => {
   const baseClasses =
-    'cursor-pointer overflow-hidden flex items-center relative rounded-md outline-none duration-200 px-3 py-1';
+    'cursor-pointer overflow-hidden flex items-center relative outline-none duration-200 ';
   const variantClasses = {
     filled:
       'bg-primary text-white hover:bg-opacity-level-80 focus:bg-opacity-level-80',
@@ -20,7 +27,14 @@ const Button = ({ children, variant }: ButtonProps) => {
   };
 
   return (
-    <button className={[baseClasses, variantClasses[variant]].join(' ')}>
+    <button
+      className={[
+        baseClasses,
+        variantClasses[variant],
+        rounded ? 'rounded-full p-2' : 'px-3 py-1 rounded-md',
+      ].join(' ')}
+      onClick={onClick}
+    >
       {children}
       <RippleContainer />
     </button>

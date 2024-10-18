@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import RippleContainer from './RippleContainer';
 
 type ButtonVariant = 'filled' | 'outlined' | 'text';
@@ -7,13 +7,15 @@ interface ButtonProps {
   variant: ButtonVariant;
   children: ReactNode;
   rounded?: boolean;
-  onClick: () => void;
+  disabled?: boolean;
+  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button = ({
   children,
   variant,
   rounded = false,
+  disabled,
   onClick,
 }: ButtonProps) => {
   const baseClasses =
@@ -33,6 +35,7 @@ const Button = ({
         variantClasses[variant],
         rounded ? 'rounded-full p-2' : 'px-3 py-1 rounded-md',
       ].join(' ')}
+      disabled={disabled}
       onClick={onClick}
     >
       {children}

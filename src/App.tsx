@@ -1,3 +1,4 @@
+import Pagination from './table/components/Pagination';
 import Table from './table/components/Table';
 import { SortingOrder } from './table/enums/sortingOrder';
 import { Column } from './table/types/column';
@@ -29,7 +30,17 @@ function App() {
         columns={cols}
         rowHeight={50}
         header={<div>Header</div>}
-        footer={<div>Footer</div>}
+        footer={
+          <Pagination
+            label={'Rows per page:'}
+            page={0}
+            pageSize={50}
+            total={40}
+            rowsPerPageOptions={[5, 10, 20]}
+            onPageChange={() => {}}
+            onRowsPerPageChange={() => {}}
+          />
+        }
       />
     </div>
   );

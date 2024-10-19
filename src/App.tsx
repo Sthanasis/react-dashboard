@@ -29,6 +29,7 @@ function App() {
         rows={rows}
         columns={cols}
         rowHeight={50}
+        isVirtual={false}
         footer={
           <Pagination
             label={'Rows per page:'}

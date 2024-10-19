@@ -9,6 +9,7 @@ export const charactersSlice = createSlice({
   name: 'characters',
   initialState,
   reducers: {},
+  selectors: {},
 });
 
 // Action creators are generated for each case reducer function

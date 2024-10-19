@@ -24,12 +24,11 @@ const rows: Row[] = Array.from(new Array(500), (v, k) => ({
 }));
 function App() {
   return (
-    <div className="w-screen">
+    <div className="w-screen h-screen">
       <Table
         rows={rows}
         columns={cols}
         rowHeight={50}
-        header={<div>Header</div>}
         footer={
           <Pagination
             label={'Rows per page:'}

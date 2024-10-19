@@ -12,7 +12,7 @@ const cols: Column[] = [
   { name: '4', sortingOrder: SortingOrder.default, value: 'text 4' },
 ];
 
-const rows: Row[] = Array.from(new Array(500), (v, k) => ({
+const rows: Row[] = Array.from(new Array(10000), (_, k) => ({
   id: k,
   items: [
     { name: '0', value: 'test' + k },
@@ -29,7 +29,7 @@ function App() {
         rows={rows}
         columns={cols}
         rowHeight={50}
-        isVirtual={false}
+        isVirtual={true}
         footer={
           <Pagination
             label={'Rows per page:'}

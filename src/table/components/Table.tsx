@@ -18,6 +18,7 @@ const Table = ({
   columns,
   height = 500,
   rowHeight = 40,
+  renderAhead,
   header,
   footer,
   isVirtual,
@@ -62,6 +63,7 @@ const Table = ({
                 rows={rows}
                 rowHeight={rowHeight}
                 height={height}
+                renderAhead={renderAhead}
               />
             ) : (
               <div

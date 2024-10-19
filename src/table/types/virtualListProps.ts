@@ -4,4 +4,5 @@ export type VirtaulListProps = {
   rows: Row[];
   height?: number;
   rowHeight?: number;
+  renderAhead?: number;
 };

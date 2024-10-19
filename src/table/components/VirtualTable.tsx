@@ -7,11 +7,12 @@ const VirtualTable = ({
   rows,
   height = 500,
   rowHeight = 40,
+  renderAhead = 20,
 }: VirtaulListProps) => {
   const { handleScroll, offsetY, start, visibleNodeList } = useVirtualList({
     containerHeight: height,
     itemHeight: rowHeight,
-    renderAhead: 20,
+    renderAhead: renderAhead,
     totalItems: rows.length,
   });
 

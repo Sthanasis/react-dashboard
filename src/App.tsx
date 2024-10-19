@@ -12,7 +12,7 @@ const cols: Column[] = [
   { name: '4', sortingOrder: SortingOrder.default, value: 'text 4' },
 ];
 
-const rows: Row[] = Array.from(new Array(100), (v, k) => ({
+const rows: Row[] = Array.from(new Array(500), (v, k) => ({
   id: k,
   items: [
     { name: '0', value: 'test' + k },

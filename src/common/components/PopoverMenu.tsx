@@ -41,9 +41,10 @@ const PopoverMenu = ({
           <datalist className={classList.join(' ')}>
             {options.map((option) => (
               <option
+                key={option}
                 value={option}
                 className="py-1 px-3 w-full cursor-pointer hover:bg-gray-100 overflow-hidden"
-                onClick={optionChangeHandler}
+                onClick={(e) => optionChangeHandler(e)}
               >
                 {option}
               </option>

@@ -38,7 +38,7 @@ const Pagination = ({
         <PopoverMenu
           label={pageSize.toString()}
           options={rowsPerPageOptions}
-          onChange={() => {}}
+          onChange={(rowsPerPage) => onRowsPerPageChange(Number(rowsPerPage))}
         />
       </div>
       <span>{pageIndicator}</span>

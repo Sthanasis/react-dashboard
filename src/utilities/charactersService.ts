@@ -7,14 +7,19 @@ async function fetchAllCharacters(): Promise<ApiResponse> {
   const characters = await response.json();
   return characters;
 }
-async function fetchAllPaginatedCharacters(
+async function fetchAllCharactersByQuery(
   page: number,
-  pageSize: number
+  pageSize: number,
+  search?: string
 ): Promise<ApiResponse> {
-  console.log(page, pageSize);
-  const response = await fetch(`${BASE_URL}?page=${page}&pageSize=${pageSize}`);
+  let query = `?page=${page}&pageSize=${pageSize}`;
+  if (!!search) query = query.concat(`&name=${search}`);
+  const response = await fetch(`${BASE_URL}${query}`);
   const characters = await response.json();
   return characters;
 }
 
-export default { fetchAllCharacters, fetchAllPaginatedCharacters };
+export default {
+  fetchAllCharacters,
+  fetchAllCharactersByQuery,
+};

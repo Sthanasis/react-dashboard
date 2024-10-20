@@ -1,12 +1,33 @@
-import SortAscIcon from '@/common/icons/SortAscIcon';
-import SortDescIcon from '@/common/icons/SortDescIcon';
 import { SortingOrder } from '@/table/enums/sortingOrder';
-import SortIcon from '@/common/icons/SortIcon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faSort,
+  faSortAsc,
+  faSortDesc,
+} from '@fortawesome/free-solid-svg-icons';
 
 export function getSortingIcon(order: SortingOrder) {
   return {
-    [SortingOrder.asc]: <SortAscIcon />,
-    [SortingOrder.desc]: <SortDescIcon />,
-    [SortingOrder.default]: <SortIcon />,
+    [SortingOrder.asc]: (
+      <FontAwesomeIcon
+        width={24}
+        height={24}
+        icon={faSortAsc}
+      />
+    ),
+    [SortingOrder.desc]: (
+      <FontAwesomeIcon
+        width={24}
+        height={24}
+        icon={faSortDesc}
+      />
+    ),
+    [SortingOrder.default]: (
+      <FontAwesomeIcon
+        width={24}
+        height={24}
+        icon={faSort}
+      />
+    ),
   }[order];
 }

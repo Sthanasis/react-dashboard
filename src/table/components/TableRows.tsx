@@ -21,7 +21,7 @@ const TableRows = ({
         {row.items.map((cell) => (
           <td
             key={cell.name}
-            className="p-2"
+            className="p-2 whitespace-nowrap overflow-hidden text-ellipsis"
           >
             {cell.value}
           </td>

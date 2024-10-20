@@ -18,7 +18,7 @@ const VirtualTable = ({
 
   const renderedRows = useMemo(
     () => visibleNodeList.map((_, i) => rows[start + i]),
-    [start, visibleNodeList]
+    [start, visibleNodeList, rows]
   );
 
   return (

@@ -20,31 +20,27 @@ const columns: Column<CharacterKey>[] = [
   {
     id: 'participatingShows',
     value: 'Shows',
-    sortingOrder: SortingOrder.default,
   },
   {
     id: 'participatingVideoGames',
     value: 'Video Games',
-    sortingOrder: SortingOrder.default,
   },
-  { id: 'allies', value: 'Allies', sortingOrder: SortingOrder.default },
+  { id: 'allies', value: 'Allies' },
   {
     id: 'enemies',
     value: 'Enemies',
-    sortingOrder: SortingOrder.default,
   },
 ];
 
-type PaginationOptions = {
+export type PaginationOptions = {
   pageSize: number;
   totalPages: number;
   currentPage: number;
   totalPerPage: number[];
-  nextPage: string | null;
-  previousPage: string | null;
 };
 
 export interface CharactersState {
+  searchedName: string;
   loading: boolean;
   characters: Row<CharacterKey>[];
   tableColumns: Column<CharacterKey>[];
@@ -52,6 +48,7 @@ export interface CharactersState {
 }
 
 const initialState: CharactersState = {
+  searchedName: '',
   loading: false,
   characters: [],
   tableColumns: columns,
@@ -60,8 +57,6 @@ const initialState: CharactersState = {
     currentPage: 1,
     totalPages: 0,
     totalPerPage: [10, 20, 50, 100, 200, 500],
-    nextPage: null,
-    previousPage: null,
   },
 };
 
@@ -72,7 +67,7 @@ export const charactersSlice = createSlice({
     request(state) {
       state.loading = true;
     },
-    setCharacters(state, action: PayloadAction<ApiResponse>) {
+    setInitialData(state, action: PayloadAction<ApiResponse>) {
       state.characters = action.payload.data
         .map((character) => ({
           id: character._id,
@@ -92,6 +87,24 @@ export const charactersSlice = createSlice({
       state.paginationOptions.pageSize = action.payload.info.count;
       state.paginationOptions.totalPages = action.payload.info.totalPages;
     },
+    setCharacters(state, action: PayloadAction<ApiResponse>) {
+      state.characters = action.payload.data
+        .map((character) => ({
+          id: character._id,
+          name: character.name,
+          participatingShows: character.tvShows.length,
+          participatingVideoGames: character.videoGames.length,
+          allies: character.allies.join(', '),
+          enemies: character.enemies.join(', '),
+        }))
+        .map((item) => ({
+          id: item.id,
+          items: state.tableColumns.map((column) => ({
+            name: column.id,
+            value: item[column.id],
+          })),
+        }));
+    },
     setPaginationOptions(
       state,
       action: PayloadAction<{
@@ -102,18 +115,35 @@ export const charactersSlice = createSlice({
       state.paginationOptions.currentPage = action.payload.page;
       state.paginationOptions.pageSize = action.payload.pageSize;
     },
+    setTotalPages(state, action: PayloadAction<number>) {
+      state.paginationOptions.totalPages = action.payload;
+    },
+    setSearchedName(state, action: PayloadAction<string>) {
+      state.searchedName = action.payload;
+    },
   },
   selectors: {
     selectCharacters: (state) => state.characters,
     selectRows: (state) => state.characters,
     selectColumns: (state) => state.tableColumns,
     selectPaginationOptions: (state) => state.paginationOptions,
+    selectSearchedName: (state) => state.searchedName,
   },
 });
 
-export const { setCharacters, request, setPaginationOptions } =
-  charactersSlice.actions;
+export const {
+  setCharacters,
+  request,
+  setPaginationOptions,
+  setInitialData,
+  setTotalPages,
+  setSearchedName,
+} = charactersSlice.actions;
 
-export const { selectRows, selectColumns, selectPaginationOptions } =
-  charactersSlice.selectors;
+export const {
+  selectRows,
+  selectColumns,
+  selectPaginationOptions,
+  selectSearchedName,
+} = charactersSlice.selectors;
 export default charactersSlice.reducer;

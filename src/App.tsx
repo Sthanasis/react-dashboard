@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Pagination from '@/table/components/Pagination';
 import Table from '@/table/components/Table';
 import {
@@ -7,23 +7,39 @@ import {
   selectPaginationOptions,
   selectRows,
   setPaginationOptions,
+  setSearchedName,
 } from '@/store/features/characters/charactersSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import Search from './table/components/Search';
 
 function App() {
   const dispatch = useAppDispatch();
-  const rows = useAppSelector((state) => selectRows(state));
-  const cols = useAppSelector((state) => selectColumns(state));
-  const paginationOptions = useAppSelector((state) =>
-    selectPaginationOptions(state)
+  const rows = useAppSelector(selectRows);
+  const cols = useAppSelector(selectColumns);
+  const { currentPage, pageSize, totalPages, totalPerPage } = useAppSelector(
+    selectPaginationOptions
   );
 
-  const isVirtual = paginationOptions.pageSize > 100;
+  const [debounce, setDebounce] = useState<ReturnType<typeof setTimeout>>();
+  const isVirtual = rows.length >= 100;
 
   useEffect(() => {
     dispatch(request());
   }, []);
 
+  const totalRows = useMemo(
+    () => totalPages * pageSize,
+    [totalPages, pageSize]
+  );
+
+  function handleSearch(name: string) {
+    if (debounce) clearTimeout(debounce);
+    setDebounce(
+      setTimeout(() => {
+        dispatch(setSearchedName(name));
+      }, 500)
+    );
+  }
   return (
     <div className="w-screen h-screen">
       <Table
@@ -31,18 +47,26 @@ function App() {
         columns={cols}
         rowHeight={50}
         isVirtual={isVirtual}
+        header={
+          <div className="flex">
+            <Search
+              placeholder="Search"
+              onChange={handleSearch}
+            />
+          </div>
+        }
         footer={
           <Pagination
-            label={'Rows per page:'}
-            page={paginationOptions.currentPage}
-            pageSize={paginationOptions.pageSize}
-            total={paginationOptions.totalPages}
-            rowsPerPageOptions={paginationOptions.totalPerPage}
+            label="Rows per page:"
+            page={currentPage}
+            pageSize={pageSize}
+            total={totalRows}
+            rowsPerPageOptions={totalPerPage}
             onPageChange={(page) =>
               dispatch(
                 setPaginationOptions({
                   page,
-                  pageSize: paginationOptions.pageSize,
+                  pageSize: pageSize,
                 })
               )
             }

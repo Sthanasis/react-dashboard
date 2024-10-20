@@ -24,7 +24,7 @@ const Table = ({
   isVirtual,
 }: TableProps) => (
   <div className="border-gray-300 border rounded-lg overflow-x-auto">
-    {header}
+    <div className="sticky left-0">{header}</div>
     <table className="w-full min-w-[480px]">
       <tbody>
         <tr>
@@ -39,15 +39,17 @@ const Table = ({
                     >
                       <div className="flex items-center gap-2">
                         <span>{cell.value}</span>
-                        <span>
-                          <Button
-                            rounded
-                            variant="text"
-                            onClick={() => {}}
-                          >
-                            {getSortingIcon(cell.sortingOrder)}
-                          </Button>
-                        </span>
+                        {cell.sortingOrder && (
+                          <span>
+                            <Button
+                              rounded
+                              variant="text"
+                              onClick={() => {}}
+                            >
+                              <span>{getSortingIcon(cell.sortingOrder)}</span>
+                            </Button>
+                          </span>
+                        )}
                       </div>
                     </th>
                   ))}

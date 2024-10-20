@@ -58,7 +58,7 @@ function App() {
     dispatch(searchByFilter());
   }
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen p-2">
       <Table
         rows={rows}
         columns={cols}
@@ -68,7 +68,7 @@ function App() {
         onSelectRow={(id) => dispatch(setCharacterId(id))}
         header={
           <Button
-            variant="outlined"
+            variant="text"
             color="primary"
             onClick={() => setIsFormVisible(true)}
           >

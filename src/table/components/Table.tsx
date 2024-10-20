@@ -34,8 +34,8 @@ const Table = ({
                 <tr className="border-b table w-full table-fixed">
                   {columns.map((cell) => (
                     <th
-                      key={cell.name}
-                      className="p-2 text-start whitespace-nowrap"
+                      key={cell.id}
+                      className="p-2 text-start"
                     >
                       <div className="flex items-center gap-2">
                         <span>{cell.value}</span>

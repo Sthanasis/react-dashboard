@@ -43,7 +43,7 @@ const PopoverMenu = ({
               <option
                 key={option}
                 value={option}
-                className="py-1 px-3 w-full cursor-pointer hover:bg-gray-100 overflow-hidden"
+                className="p-2 w-full cursor-pointer hover:bg-smokey-gray overflow-hidden"
                 onClick={(e) => optionChangeHandler(e)}
               >
                 {option}

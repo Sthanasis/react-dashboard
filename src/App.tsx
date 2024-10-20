@@ -1,44 +1,59 @@
-import Pagination from './table/components/Pagination';
-import Table from './table/components/Table';
-import { SortingOrder } from './table/enums/sortingOrder';
-import { Column } from './table/types/column';
-import { Row } from './table/types/row';
+import { useEffect } from 'react';
+import Pagination from '@/table/components/Pagination';
+import Table from '@/table/components/Table';
+import {
+  request,
+  selectColumns,
+  selectPaginationOptions,
+  selectRows,
+  setPaginationOptions,
+} from '@/store/features/characters/charactersSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
-const cols: Column[] = [
-  { name: '0', sortingOrder: SortingOrder.default, value: 'text' },
-  { name: '1', sortingOrder: SortingOrder.default, value: 'text 1' },
-  { name: '2', sortingOrder: SortingOrder.default, value: 'text 2' },
-  { name: '3', sortingOrder: SortingOrder.default, value: 'text 3' },
-  { name: '4', sortingOrder: SortingOrder.default, value: 'text 4' },
-];
-
-const rows: Row[] = Array.from(new Array(10000), (_, k) => ({
-  id: k,
-  items: [
-    { name: '0', value: 'test' + k },
-    { name: '1', value: 'test' + k },
-    { name: '2', value: 'test' + k },
-    { name: '3', value: 'test' + k },
-    { name: '4', value: 'test' + k },
-  ],
-}));
 function App() {
+  const dispatch = useAppDispatch();
+  const rows = useAppSelector((state) => selectRows(state));
+  const cols = useAppSelector((state) => selectColumns(state));
+  const paginationOptions = useAppSelector((state) =>
+    selectPaginationOptions(state)
+  );
+
+  const isVirtual = paginationOptions.pageSize > 100;
+
+  useEffect(() => {
+    dispatch(request());
+  }, []);
+
   return (
     <div className="w-screen h-screen">
       <Table
         rows={rows}
         columns={cols}
         rowHeight={50}
-        isVirtual={true}
+        isVirtual={isVirtual}
         footer={
           <Pagination
             label={'Rows per page:'}
-            page={0}
-            pageSize={50}
-            total={40}
-            rowsPerPageOptions={[5, 10, 20]}
-            onPageChange={() => {}}
-            onRowsPerPageChange={() => {}}
+            page={paginationOptions.currentPage}
+            pageSize={paginationOptions.pageSize}
+            total={paginationOptions.totalPages}
+            rowsPerPageOptions={paginationOptions.totalPerPage}
+            onPageChange={(page) =>
+              dispatch(
+                setPaginationOptions({
+                  page,
+                  pageSize: paginationOptions.pageSize,
+                })
+              )
+            }
+            onRowsPerPageChange={(pageSize) =>
+              dispatch(
+                setPaginationOptions({
+                  pageSize,
+                  page: 1,
+                })
+              )
+            }
           />
         }
       />

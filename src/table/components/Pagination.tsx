@@ -27,8 +27,8 @@ const Pagination = ({
   total,
   label,
 }: PaginationProps) => {
-  const startIndicator = pageSize * page + 1;
-  let endIndicator = pageSize * (page + 1);
+  const startIndicator = pageSize * (page - 1) + 1;
+  let endIndicator = pageSize * page;
   endIndicator = total < endIndicator ? total : endIndicator;
   const pageIndicator = `${startIndicator} - ${endIndicator} / ${total}`;
   return (
@@ -46,18 +46,26 @@ const Pagination = ({
         <Button
           variant="text"
           rounded
-          disabled={page === 0}
+          disabled={page === 1}
           onClick={() => onPageChange(1)}
         >
-          <FontAwesomeIcon icon={faAnglesLeft} />
+          <FontAwesomeIcon
+            icon={faAnglesLeft}
+            height="16"
+            width="16"
+          />
         </Button>
         <Button
           variant="text"
           rounded
-          disabled={page === 0}
+          disabled={page === 1}
           onClick={() => onPageChange(page - 1)}
         >
-          <FontAwesomeIcon icon={faAngleLeft} />
+          <FontAwesomeIcon
+            icon={faAngleLeft}
+            height="16"
+            width="16"
+          />
         </Button>
         <Button
           variant="text"
@@ -65,15 +73,23 @@ const Pagination = ({
           disabled={endIndicator === total}
           onClick={() => onPageChange(page + 1)}
         >
-          <FontAwesomeIcon icon={faAngleRight} />
+          <FontAwesomeIcon
+            icon={faAngleRight}
+            height="16"
+            width="16"
+          />
         </Button>
         <Button
           variant="text"
           rounded
           disabled={endIndicator === total}
-          onClick={() => onPageChange(Math.floor(total / pageSize))}
+          onClick={() => onPageChange(Math.ceil(total / pageSize))}
         >
-          <FontAwesomeIcon icon={faAnglesRight} />
+          <FontAwesomeIcon
+            icon={faAnglesRight}
+            height="16"
+            width="16"
+          />
         </Button>
       </div>
     </div>

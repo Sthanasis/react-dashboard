@@ -1,19 +1,13 @@
 import { SortingOrder } from '@/table/enums/sortingOrder';
 import { Column } from '@/table/types/column';
 import { Row } from '@/table/types/row';
+import { mapTableRows } from '@/table/utilities/mapTableRows';
+import { sortByName } from '@/table/utilities/sortByName';
 import { ApiResponse } from '@/types/apiResponse';
+import { CharacterKey } from '@/types/character';
+import { DisneyCharacter } from '@/types/disneyCharacter';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-
-type Character = {
-  name: string;
-  participatingShows: number;
-  participatingVideoGames: number;
-  allies: number;
-  enemies: string;
-};
-
-type CharacterKey = keyof Character;
 
 const columns: Column<CharacterKey>[] = [
   { id: 'name', value: 'Name', sortingOrder: SortingOrder.default },
@@ -40,14 +34,17 @@ export type PaginationOptions = {
 };
 
 export interface CharactersState {
+  data: DisneyCharacter[];
   searchedName: string;
   loading: boolean;
   characters: Row<CharacterKey>[];
   tableColumns: Column<CharacterKey>[];
   paginationOptions: PaginationOptions;
+  order: SortingOrder;
 }
 
 const initialState: CharactersState = {
+  data: [],
   searchedName: '',
   loading: false,
   characters: [],
@@ -58,6 +55,7 @@ const initialState: CharactersState = {
     totalPages: 0,
     totalPerPage: [10, 20, 50, 100, 200, 500],
   },
+  order: SortingOrder.default,
 };
 
 export const charactersSlice = createSlice({
@@ -68,42 +66,16 @@ export const charactersSlice = createSlice({
       state.loading = true;
     },
     setInitialData(state, action: PayloadAction<ApiResponse>) {
-      state.characters = action.payload.data
-        .map((character) => ({
-          id: character._id,
-          name: character.name,
-          participatingShows: character.tvShows.length,
-          participatingVideoGames: character.videoGames.length,
-          allies: character.allies.join(', '),
-          enemies: character.enemies.join(', '),
-        }))
-        .map((item) => ({
-          id: item.id,
-          items: state.tableColumns.map((column) => ({
-            name: column.id,
-            value: item[column.id],
-          })),
-        }));
+      state.characters = mapTableRows(action.payload.data, state.tableColumns);
+      state.data = action.payload.data;
       state.paginationOptions.pageSize = action.payload.info.count;
       state.paginationOptions.totalPages = action.payload.info.totalPages;
     },
     setCharacters(state, action: PayloadAction<ApiResponse>) {
-      state.characters = action.payload.data
-        .map((character) => ({
-          id: character._id,
-          name: character.name,
-          participatingShows: character.tvShows.length,
-          participatingVideoGames: character.videoGames.length,
-          allies: character.allies.join(', '),
-          enemies: character.enemies.join(', '),
-        }))
-        .map((item) => ({
-          id: item.id,
-          items: state.tableColumns.map((column) => ({
-            name: column.id,
-            value: item[column.id],
-          })),
-        }));
+      const characters = mapTableRows(action.payload.data, state.tableColumns);
+      state.data = action.payload.data;
+      sortByName(characters, state.order);
+      state.characters = characters;
     },
     setPaginationOptions(
       state,
@@ -120,6 +92,16 @@ export const charactersSlice = createSlice({
     },
     setSearchedName(state, action: PayloadAction<string>) {
       state.searchedName = action.payload;
+    },
+    setSortingOrder(state, action: PayloadAction<SortingOrder>) {
+      state.order = action.payload;
+      const result = sortByName<CharacterKey>(state.characters, state.order);
+      state.characters = result ?? mapTableRows(state.data, state.tableColumns);
+      state.tableColumns = state.tableColumns.map((column) =>
+        column.id === 'name'
+          ? { ...column, sortingOrder: action.payload }
+          : column
+      );
     },
   },
   selectors: {
@@ -138,6 +120,7 @@ export const {
   setInitialData,
   setTotalPages,
   setSearchedName,
+  setSortingOrder,
 } = charactersSlice.actions;
 
 export const {

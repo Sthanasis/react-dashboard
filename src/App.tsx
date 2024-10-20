@@ -8,9 +8,11 @@ import {
   selectRows,
   setPaginationOptions,
   setSearchedName,
+  setSortingOrder,
 } from '@/store/features/characters/charactersSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import Search from './table/components/Search';
+import { getNextOrder } from './table/utilities/getNextOrder';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -47,6 +49,7 @@ function App() {
         columns={cols}
         rowHeight={50}
         isVirtual={isVirtual}
+        onSortByName={(order) => dispatch(setSortingOrder(getNextOrder(order)))}
         header={
           <div className="flex">
             <Search

@@ -5,12 +5,14 @@ import { ReactNode } from 'react';
 import { VirtaulListProps } from '../types/virtualListProps';
 import VirtualTable from './VirtualTable';
 import TableRows from './TableRows';
+import { SortingOrder } from '../enums/sortingOrder';
 
 interface TableProps extends VirtaulListProps {
   columns: Column[];
   isVirtual?: boolean;
   header?: ReactNode;
   footer?: ReactNode;
+  onSortByName?: (order: SortingOrder) => void;
 }
 
 const Table = ({
@@ -22,6 +24,7 @@ const Table = ({
   header,
   footer,
   isVirtual,
+  onSortByName,
 }: TableProps) => (
   <div className="border-gray-300 border rounded-lg overflow-x-auto">
     <div className="sticky left-0">{header}</div>
@@ -44,7 +47,11 @@ const Table = ({
                             <Button
                               rounded
                               variant="text"
-                              onClick={() => {}}
+                              onClick={() =>
+                                onSortByName?.(
+                                  cell.sortingOrder as SortingOrder
+                                )
+                              }
                             >
                               <span>{getSortingIcon(cell.sortingOrder)}</span>
                             </Button>

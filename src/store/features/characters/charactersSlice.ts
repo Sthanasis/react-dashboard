@@ -5,6 +5,7 @@ import { mapTableRows } from '@/table/utilities/mapTableRows';
 import { sortByName } from '@/table/utilities/sortByName';
 import { ApiResponse } from '@/types/apiResponse';
 import { CharacterKey } from '@/types/character';
+import { CharacterPreview } from '@/types/characterPreview';
 import { DisneyCharacter } from '@/types/disneyCharacter';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -41,6 +42,8 @@ export interface CharactersState {
   tableColumns: Column<CharacterKey>[];
   paginationOptions: PaginationOptions;
   order: SortingOrder;
+  characterData: CharacterPreview | null;
+  characterId: number | null;
 }
 
 const initialState: CharactersState = {
@@ -56,6 +59,8 @@ const initialState: CharactersState = {
     totalPerPage: [10, 20, 50, 100, 200, 500],
   },
   order: SortingOrder.default,
+  characterData: null,
+  characterId: null,
 };
 
 export const charactersSlice = createSlice({
@@ -103,6 +108,22 @@ export const charactersSlice = createSlice({
           : column
       );
     },
+    setCharacterData(state, action: PayloadAction<DisneyCharacter | null>) {
+      const character = action.payload;
+      if (!character) {
+        state.characterData = null;
+        return;
+      }
+      state.characterData = {
+        name: character.name,
+        image: character.imageUrl,
+        tvShows: character.tvShows,
+        videoGames: character.videoGames,
+      };
+    },
+    setCharacterId(state, action: PayloadAction<number | null>) {
+      state.characterId = action.payload;
+    },
   },
   selectors: {
     selectCharacters: (state) => state.characters,
@@ -110,6 +131,7 @@ export const charactersSlice = createSlice({
     selectColumns: (state) => state.tableColumns,
     selectPaginationOptions: (state) => state.paginationOptions,
     selectSearchedName: (state) => state.searchedName,
+    selectCharacterData: (state) => state.characterData,
   },
 });
 
@@ -121,6 +143,8 @@ export const {
   setTotalPages,
   setSearchedName,
   setSortingOrder,
+  setCharacterData,
+  setCharacterId,
 } = charactersSlice.actions;
 
 export const {
@@ -128,5 +152,6 @@ export const {
   selectColumns,
   selectPaginationOptions,
   selectSearchedName,
+  selectCharacterData,
 } = charactersSlice.selectors;
 export default charactersSlice.reducer;

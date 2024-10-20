@@ -3,9 +3,11 @@ import { Row } from '@/table/types/row';
 const TableRows = ({
   rows,
   rowHeight,
+  onSelectRow,
 }: {
   rows: Row[];
   rowHeight?: number;
+  onSelectRow?: (id: Row['id']) => void;
 }) => (
   <>
     {rows.map((row, i) => (
@@ -17,6 +19,7 @@ const TableRows = ({
         ].join(' ')}
         role="button"
         style={{ height: rowHeight ?? 'auto' }}
+        onClick={() => onSelectRow?.(row.id)}
       >
         {row.items.map((cell) => (
           <td

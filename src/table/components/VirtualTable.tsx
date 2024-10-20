@@ -8,6 +8,7 @@ const VirtualTable = ({
   height = 500,
   rowHeight = 40,
   renderAhead = 20,
+  onSelectRow,
 }: VirtaulListProps) => {
   const { handleScroll, offsetY, start, visibleNodeList } = useVirtualList({
     containerHeight: height,
@@ -38,6 +39,7 @@ const VirtualTable = ({
             <TableRows
               rows={renderedRows}
               rowHeight={rowHeight}
+              onSelectRow={onSelectRow}
             />
           </tbody>
         </table>

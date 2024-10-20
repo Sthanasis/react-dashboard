@@ -5,6 +5,8 @@ import {
   request,
   selectPaginationOptions,
   selectSearchedName,
+  setCharacterData,
+  setCharacterId,
   setCharacters,
   setInitialData,
   setPaginationOptions,
@@ -13,6 +15,7 @@ import {
 } from '@/store/features/characters/charactersSlice';
 import { ApiResponse } from '@/types/apiResponse';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { DisneyCharacter } from '@/types/disneyCharacter';
 
 export function* fetchData(): Generator {
   try {
@@ -49,14 +52,33 @@ export function* fetchBySearch(action: PayloadAction<string>): Generator {
     selectPaginationOptions
   );
   try {
-    const result: ApiResponse = yield call(
+    const result: ApiResponse<DisneyCharacter[] | DisneyCharacter> = yield call(
       charactersService.fetchAllCharactersByQuery,
       currentPage,
       pageSize,
       action.payload
     );
-    yield put(setCharacters(result));
+    const payload: ApiResponse = {
+      info: result.info,
+      data: Array.isArray(result.data) ? result.data : [result.data],
+    };
+    yield put(setCharacters(payload));
     yield put(setTotalPages(result.info.totalPages));
+  } catch (err) {
+    console.error(err);
+  }
+}
+export function* fetchByCharacterId(
+  action: PayloadAction<number | null>
+): Generator {
+  const id = action.payload;
+  if (!id) {
+    yield put(setCharacterData(null));
+    return;
+  }
+  try {
+    const result = yield call(charactersService.fetchCharacterById, id);
+    yield put(setCharacterData(result.data));
   } catch (err) {
     console.error(err);
   }
@@ -72,4 +94,8 @@ export function* watchPaginationOptions() {
 
 export function* watchSearchChange() {
   yield takeEvery(setSearchedName, fetchBySearch);
+}
+
+export function* watchCharacterId() {
+  yield takeEvery(setCharacterId, fetchByCharacterId);
 }

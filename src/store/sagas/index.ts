@@ -3,6 +3,7 @@ import {
   watchFetchCharacters,
   watchPaginationOptions,
   watchSearchChange,
+  watchCharacterId,
 } from '@/store/sagas/characters';
 
 export default function* rootSaga() {
@@ -10,5 +11,6 @@ export default function* rootSaga() {
     watchFetchCharacters(),
     watchPaginationOptions(),
     watchSearchChange(),
+    watchCharacterId(),
   ]);
 }

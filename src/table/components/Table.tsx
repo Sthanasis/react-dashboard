@@ -24,6 +24,7 @@ const Table = ({
   header,
   footer,
   isVirtual,
+  onSelectRow,
   onSortByName,
 }: TableProps) => (
   <div className="border-gray-300 border rounded-lg overflow-x-auto">
@@ -73,6 +74,7 @@ const Table = ({
                 rowHeight={rowHeight}
                 height={height}
                 renderAhead={renderAhead}
+                onSelectRow={onSelectRow}
               />
             ) : (
               <div
@@ -81,7 +83,10 @@ const Table = ({
               >
                 <table>
                   <tbody>
-                    <TableRows rows={rows} />
+                    <TableRows
+                      rows={rows}
+                      onSelectRow={onSelectRow}
+                    />
                   </tbody>
                 </table>
               </div>

@@ -1,7 +1,7 @@
 import { DisneyCharacter } from '@/types/disneyCharacter';
 import { ApiPaginationInfo } from '@/types/apiPaginationInfo';
 
-export type ApiResponse = {
+export type ApiResponse<T = DisneyCharacter[]> = {
   info: ApiPaginationInfo;
-  data: DisneyCharacter[];
+  data: T;
 };

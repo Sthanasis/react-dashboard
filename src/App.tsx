@@ -3,9 +3,12 @@ import Pagination from '@/table/components/Pagination';
 import Table from '@/table/components/Table';
 import {
   request,
+  selectCharacterData,
   selectColumns,
   selectPaginationOptions,
   selectRows,
+  setCharacterData,
+  setCharacterId,
   setPaginationOptions,
   setSearchedName,
   setSortingOrder,
@@ -13,6 +16,8 @@ import {
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import Search from './table/components/Search';
 import { getNextOrder } from './table/utilities/getNextOrder';
+import Modal from './common/components/Modal';
+import CharacterInfo from './table/components/CharacterInfo';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -21,6 +26,7 @@ function App() {
   const { currentPage, pageSize, totalPages, totalPerPage } = useAppSelector(
     selectPaginationOptions
   );
+  const characterData = useAppSelector(selectCharacterData);
 
   const [debounce, setDebounce] = useState<ReturnType<typeof setTimeout>>();
   const isVirtual = rows.length >= 100;
@@ -50,8 +56,9 @@ function App() {
         rowHeight={50}
         isVirtual={isVirtual}
         onSortByName={(order) => dispatch(setSortingOrder(getNextOrder(order)))}
+        onSelectRow={(id) => dispatch(setCharacterId(id))}
         header={
-          <div className="flex">
+          <div className="flex justify-end">
             <Search
               placeholder="Search"
               onChange={handleSearch}
@@ -84,6 +91,19 @@ function App() {
           />
         }
       />
+      <Modal
+        isOpen={!!characterData}
+        onClose={() => dispatch(setCharacterData(null))}
+      >
+        {characterData && (
+          <CharacterInfo
+            emptyMessage="no data"
+            showTitle="Shows"
+            videoGameTitle="Video Games"
+            character={characterData}
+          />
+        )}
+      </Modal>
     </div>
   );
 }

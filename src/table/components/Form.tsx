@@ -1,7 +1,7 @@
 import Button from '@/common/components/Button';
 import { Filter } from '@/enums/Filter';
 import Search from '@/table/components/Search';
-import { FilterOption } from '@/types/filterOption';
+import { FilterOption } from '@/store/features/characters/types/filterOption';
 
 interface FormProps {
   radioOptions: FilterOption[];

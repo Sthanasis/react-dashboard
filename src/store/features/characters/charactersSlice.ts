@@ -1,16 +1,14 @@
 import { Filter } from '@/enums/Filter';
 import { SortingOrder } from '@/table/enums/sortingOrder';
 import { Column } from '@/table/types/column';
-import { Row } from '@/table/types/row';
 import { mapTableRows } from '@/table/utilities/mapTableRows';
 import { sortByName } from '@/table/utilities/sortByName';
 import { ApiResponse } from '@/types/apiResponse';
 import { CharacterKey } from '@/types/character';
-import { CharacterPreview } from '@/types/characterPreview';
 import { DisneyCharacter } from '@/types/disneyCharacter';
-import { FilterOption } from '@/types/filterOption';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { CharactersState } from './types/characterState';
 
 const columns: Column<CharacterKey>[] = [
   { id: 'name', value: 'Name', sortingOrder: SortingOrder.default },
@@ -28,27 +26,6 @@ const columns: Column<CharacterKey>[] = [
     value: 'Enemies',
   },
 ];
-
-export type PaginationOptions = {
-  pageSize: number;
-  totalPages: number;
-  currentPage: number;
-  totalPerPage: number[];
-};
-
-export interface CharactersState {
-  data: DisneyCharacter[];
-  search: string;
-  loading: boolean;
-  filterOptions: FilterOption[];
-  activeFilter: Filter | null;
-  characters: Row<CharacterKey>[];
-  tableColumns: Column<CharacterKey>[];
-  paginationOptions: PaginationOptions;
-  order: SortingOrder;
-  characterData: CharacterPreview | null;
-  characterId: number | null;
-}
 
 const initialState: CharactersState = {
   data: [],
@@ -176,4 +153,5 @@ export const {
   selectFilterOptions,
   selectActiveFilter,
 } = charactersSlice.selectors;
+
 export default charactersSlice.reducer;

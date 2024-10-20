@@ -1,7 +1,6 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import charactersService from '@/utilities/charactersService';
 import {
-  PaginationOptions,
   request,
   searchByFilter,
   selectActiveFilter,
@@ -17,6 +16,7 @@ import {
 import { ApiResponse } from '@/types/apiResponse';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { DisneyCharacter } from '@/types/disneyCharacter';
+import { PaginationOptions } from '../features/characters/types/paginationOptions';
 
 export function* fetchData(): Generator {
   try {

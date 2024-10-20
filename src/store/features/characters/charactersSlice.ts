@@ -1,3 +1,4 @@
+import { Filter } from '@/enums/Filter';
 import { SortingOrder } from '@/table/enums/sortingOrder';
 import { Column } from '@/table/types/column';
 import { Row } from '@/table/types/row';
@@ -7,6 +8,7 @@ import { ApiResponse } from '@/types/apiResponse';
 import { CharacterKey } from '@/types/character';
 import { CharacterPreview } from '@/types/characterPreview';
 import { DisneyCharacter } from '@/types/disneyCharacter';
+import { FilterOption } from '@/types/filterOption';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
@@ -14,7 +16,7 @@ const columns: Column<CharacterKey>[] = [
   { id: 'name', value: 'Name', sortingOrder: SortingOrder.default },
   {
     id: 'participatingShows',
-    value: 'Shows',
+    value: 'TV Shows',
   },
   {
     id: 'participatingVideoGames',
@@ -36,8 +38,10 @@ export type PaginationOptions = {
 
 export interface CharactersState {
   data: DisneyCharacter[];
-  searchedName: string;
+  search: string;
   loading: boolean;
+  filterOptions: FilterOption[];
+  activeFilter: Filter | null;
   characters: Row<CharacterKey>[];
   tableColumns: Column<CharacterKey>[];
   paginationOptions: PaginationOptions;
@@ -48,8 +52,14 @@ export interface CharactersState {
 
 const initialState: CharactersState = {
   data: [],
-  searchedName: '',
+  search: '',
   loading: false,
+  filterOptions: [
+    { value: Filter.name, label: 'Name' },
+    { value: Filter.show, label: 'Show' },
+    { value: null, label: 'None' },
+  ],
+  activeFilter: null,
   characters: [],
   tableColumns: columns,
   paginationOptions: {
@@ -95,8 +105,8 @@ export const charactersSlice = createSlice({
     setTotalPages(state, action: PayloadAction<number>) {
       state.paginationOptions.totalPages = action.payload;
     },
-    setSearchedName(state, action: PayloadAction<string>) {
-      state.searchedName = action.payload;
+    setSearch(state, action: PayloadAction<string>) {
+      state.search = action.payload;
     },
     setSortingOrder(state, action: PayloadAction<SortingOrder>) {
       state.order = action.payload;
@@ -124,15 +134,21 @@ export const charactersSlice = createSlice({
     setCharacterId(state, action: PayloadAction<number | null>) {
       state.characterId = action.payload;
     },
+    setActiveFilter(state, action: PayloadAction<Filter | null>) {
+      state.activeFilter = action.payload;
+    },
+    searchByFilter() {},
   },
   selectors: {
     selectCharacters: (state) => state.characters,
     selectRows: (state) => state.characters,
     selectColumns: (state) => state.tableColumns,
     selectPaginationOptions: (state) => state.paginationOptions,
-    selectSearchedName: (state) => state.searchedName,
+    selectSearch: (state) => state.search,
     selectCharacterData: (state) => state.characterData,
     selectData: (state) => state.data,
+    selectFilterOptions: (state) => state.filterOptions,
+    selectActiveFilter: (state) => state.activeFilter,
   },
 });
 
@@ -142,18 +158,22 @@ export const {
   setPaginationOptions,
   setInitialData,
   setTotalPages,
-  setSearchedName,
+  setSearch,
   setSortingOrder,
   setCharacterData,
   setCharacterId,
+  setActiveFilter,
+  searchByFilter,
 } = charactersSlice.actions;
 
 export const {
   selectRows,
   selectColumns,
   selectPaginationOptions,
-  selectSearchedName,
+  selectSearch,
   selectCharacterData,
   selectData,
+  selectFilterOptions,
+  selectActiveFilter,
 } = charactersSlice.selectors;
 export default charactersSlice.reducer;

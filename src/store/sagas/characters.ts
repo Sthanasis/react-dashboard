@@ -3,14 +3,15 @@ import charactersService from '@/utilities/charactersService';
 import {
   PaginationOptions,
   request,
+  searchByFilter,
+  selectActiveFilter,
   selectPaginationOptions,
-  selectSearchedName,
+  selectSearch,
   setCharacterData,
   setCharacterId,
   setCharacters,
   setInitialData,
   setPaginationOptions,
-  setSearchedName,
   setTotalPages,
 } from '@/store/features/characters/charactersSlice';
 import { ApiResponse } from '@/types/apiResponse';
@@ -32,13 +33,14 @@ export function* fetchByPage(
   action: PayloadAction<{ pageSize: number; page: number }>
 ): Generator {
   const { page, pageSize } = action.payload;
-  const searchedName: string = yield select(selectSearchedName);
+  const search = yield select(selectSearch);
+  const filter = yield select(selectActiveFilter);
   try {
     const result: ApiResponse = yield call(
       charactersService.fetchAllCharactersByQuery,
       page,
       pageSize,
-      searchedName
+      { query: filter, value: search }
     );
     yield put(setCharacters(result));
     yield put(setTotalPages(result.info.totalPages));
@@ -47,16 +49,18 @@ export function* fetchByPage(
   }
 }
 
-export function* fetchBySearch(action: PayloadAction<string>): Generator {
+export function* fetchBySearch(): Generator {
   const { currentPage, pageSize }: PaginationOptions = yield select(
     selectPaginationOptions
   );
+  const search = yield select(selectSearch);
+  const filter = yield select(selectActiveFilter);
   try {
     const result: ApiResponse<DisneyCharacter[] | DisneyCharacter> = yield call(
       charactersService.fetchAllCharactersByQuery,
       currentPage,
       pageSize,
-      action.payload
+      { query: filter, value: search }
     );
     const payload: ApiResponse = {
       info: result.info,
@@ -93,7 +97,7 @@ export function* watchPaginationOptions() {
 }
 
 export function* watchSearchChange() {
-  yield takeEvery(setSearchedName, fetchBySearch);
+  yield takeEvery(searchByFilter, fetchBySearch);
 }
 
 export function* watchCharacterId() {

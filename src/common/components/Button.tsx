@@ -7,6 +7,7 @@ type ButtonColor = 'primary' | 'default';
 interface ButtonProps {
   variant: ButtonVariant;
   children: ReactNode;
+  type?: 'button' | 'submit';
   color?: ButtonColor;
   rounded?: boolean;
   disabled?: boolean;
@@ -16,6 +17,7 @@ interface ButtonProps {
 const Button = ({
   children,
   variant,
+  type = 'button',
   color = 'default',
   rounded = false,
   disabled,
@@ -58,6 +60,7 @@ const Button = ({
         buttonStyle[color],
         rounded ? 'rounded-full p-2' : 'px-3 py-1 rounded-md',
       ].join(' ')}
+      type={type}
       disabled={disabled}
       onClick={onClick}
     >

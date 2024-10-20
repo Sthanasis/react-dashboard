@@ -6,17 +6,20 @@ import { useMemo } from 'react';
 
 const PieChart = () => {
   const disneyCharacters = useAppSelector(selectData);
-  const pieChartData = useMemo(
-    () =>
-      disneyCharacters.map((character) => ({
-        y: character.films.length,
-        name: character.name,
-        custom: {
-          films: character.films.join(', '),
-        },
-      })),
-    [disneyCharacters]
-  );
+  const pieChartData = useMemo(() => {
+    const total = disneyCharacters.reduce(
+      (total, character) => (total += character.films.length),
+      0
+    );
+    return disneyCharacters.map((character) => ({
+      y: character.films.length,
+      name: character.name,
+      custom: {
+        films: character.films.join(', '),
+        percentage: Math.round((character.films.length / total) * 100),
+      },
+    }));
+  }, [disneyCharacters]);
 
   const options: Highcharts.Options = {
     title: {
@@ -27,7 +30,8 @@ const PieChart = () => {
         type: 'pie',
         data: pieChartData,
         tooltip: {
-          pointFormat: '<strong>Stars in</strong> <br/> {point.custom.films}',
+          pointFormat:
+            '<strong>{point.custom.percentage}%</strong><br/>{point.custom.films}',
         },
       },
     ],

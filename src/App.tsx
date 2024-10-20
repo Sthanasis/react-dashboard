@@ -3,22 +3,27 @@ import Pagination from '@/table/components/Pagination';
 import Table from '@/table/components/Table';
 import {
   request,
+  searchByFilter,
+  selectActiveFilter,
   selectCharacterData,
   selectColumns,
+  selectFilterOptions,
   selectPaginationOptions,
   selectRows,
+  setActiveFilter,
   setCharacterData,
   setCharacterId,
   setPaginationOptions,
-  setSearchedName,
+  setSearch,
   setSortingOrder,
 } from '@/store/features/characters/charactersSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import Search from './table/components/Search';
 import { getNextOrder } from './table/utilities/getNextOrder';
 import Modal from './common/components/Modal';
 import CharacterInfo from './table/components/CharacterInfo';
 import PieChart from './chart/PieChart';
+import Form from './table/components/Form';
+import Button from './common/components/Button';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -28,26 +33,29 @@ function App() {
     selectPaginationOptions
   );
   const characterData = useAppSelector(selectCharacterData);
+  const filterOptions = useAppSelector(selectFilterOptions);
+  const activeFilter = useAppSelector(selectActiveFilter);
 
-  const [debounce, setDebounce] = useState<ReturnType<typeof setTimeout>>();
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
   const isVirtual = rows.length >= 100;
-
-  useEffect(() => {
-    dispatch(request());
-  }, []);
 
   const totalRows = useMemo(
     () => totalPages * pageSize,
     [totalPages, pageSize]
   );
 
+  useEffect(() => {
+    dispatch(request());
+  }, []);
+
   function handleSearch(name: string) {
-    if (debounce) clearTimeout(debounce);
-    setDebounce(
-      setTimeout(() => {
-        dispatch(setSearchedName(name));
-      }, 500)
-    );
+    dispatch(setSearch(name));
+  }
+
+  function handleSubmit() {
+    setIsFormVisible(false);
+    dispatch(searchByFilter());
   }
   return (
     <div className="w-screen h-screen">
@@ -59,12 +67,13 @@ function App() {
         onSortByName={(order) => dispatch(setSortingOrder(getNextOrder(order)))}
         onSelectRow={(id) => dispatch(setCharacterId(id))}
         header={
-          <div className="flex justify-end">
-            <Search
-              placeholder="Search"
-              onChange={handleSearch}
-            />
-          </div>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setIsFormVisible(true)}
+          >
+            {'Search'}
+          </Button>
         }
         footer={
           <Pagination
@@ -104,6 +113,20 @@ function App() {
             character={characterData}
           />
         )}
+      </Modal>
+      <Modal
+        isOpen={!!isFormVisible}
+        onClose={() => setIsFormVisible(false)}
+      >
+        <Form
+          title="Search Disney Character"
+          submitText="Submit"
+          selectedRadio={activeFilter}
+          radioOptions={filterOptions}
+          onCheck={(filter) => dispatch(setActiveFilter(filter))}
+          onChange={handleSearch}
+          onSubmit={handleSubmit}
+        />
       </Modal>
       <PieChart />
     </div>

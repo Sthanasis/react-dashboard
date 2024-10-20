@@ -132,6 +132,7 @@ export const charactersSlice = createSlice({
     selectPaginationOptions: (state) => state.paginationOptions,
     selectSearchedName: (state) => state.searchedName,
     selectCharacterData: (state) => state.characterData,
+    selectData: (state) => state.data,
   },
 });
 
@@ -153,5 +154,6 @@ export const {
   selectPaginationOptions,
   selectSearchedName,
   selectCharacterData,
+  selectData,
 } = charactersSlice.selectors;
 export default charactersSlice.reducer;

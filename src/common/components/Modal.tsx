@@ -2,6 +2,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactNode } from 'react';
 import Button from './Button';
+import { createPortal } from 'react-dom';
 
 interface ModalProps {
   isOpen: boolean;
@@ -11,7 +12,8 @@ interface ModalProps {
 
 const Modal = ({ children, isOpen, onClose }: ModalProps) => {
   return (
-    isOpen && (
+    isOpen &&
+    createPortal(
       <>
         <div
           className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-level-40"
@@ -39,7 +41,8 @@ const Modal = ({ children, isOpen, onClose }: ModalProps) => {
           </div>
         </div>
         ;
-      </>
+      </>,
+      document.body
     )
   );
 };

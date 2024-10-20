@@ -18,6 +18,7 @@ import Search from './table/components/Search';
 import { getNextOrder } from './table/utilities/getNextOrder';
 import Modal from './common/components/Modal';
 import CharacterInfo from './table/components/CharacterInfo';
+import PieChart from './chart/PieChart';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -104,6 +105,7 @@ function App() {
           />
         )}
       </Modal>
+      <PieChart />
     </div>
   );
 }

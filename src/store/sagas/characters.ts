@@ -17,8 +17,18 @@ import { ApiResponse } from '@/types/apiResponse';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { DisneyCharacter } from '@/types/disneyCharacter';
 import { PaginationOptions } from '@/types/paginationOptions';
+import { MOCK_API_RESPONSE } from '@/mocks/mockApiResponse';
 
 export function* fetchData(): Generator {
+  vi.spyOn(charactersService, 'fetchAllCharacters').mockResolvedValue(
+    MOCK_API_RESPONSE
+  );
+  vi.spyOn(charactersService, 'fetchAllCharactersByQuery').mockResolvedValue(
+    MOCK_API_RESPONSE
+  );
+  vi.spyOn(charactersService, 'fetchCharacterById').mockResolvedValue(
+    MOCK_API_RESPONSE
+  );
   try {
     const result: ApiResponse = yield call(
       charactersService.fetchAllCharacters

@@ -50,9 +50,13 @@ describe('characters saga', () => {
   });
   test('fetchByCharacterId', () => {
     const action = { payload: 1, type: '' };
+    const character = MOCK_API_RESPONSE.data[0];
     const generator = fetchByCharacterId(action);
     expect(generator.next().value).toMatchObject(
       call(charactersService.fetchCharacterById, action.payload)
+    );
+    expect(generator.next({ data: character }).value).toMatchObject(
+      put(setCharacterData(character))
     );
     expect(generator.next().done).toBe(true);
   });

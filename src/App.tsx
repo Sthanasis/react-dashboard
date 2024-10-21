@@ -16,7 +16,7 @@ function App() {
 
   const linkClasses = (isActive: boolean) => {
     const classes =
-      'cursor-pointer p-2  flex items-center gap-2 justify-between';
+      'cursor-pointer p-2 h-full flex items-center gap-2 justify-between';
     return isActive ? classes.concat(' bg-primary text-white') : classes;
   };
 
@@ -26,7 +26,7 @@ function App() {
         {navigation.state !== 'idle' && <p>Navigation in progress...</p>}
       </div>
       <nav className="flex md:flex-col md:h-full bg-snow-white border border-r-gray-300 border-solid">
-        <h1 className="p-4 pl-2 text-lg font-bold">Dashboard</h1>
+        <h1 className="p-2 pl-2 text-lg font-bold">Dashboard</h1>
         <ul className="md:py-4 w-full flex md:flex-col justify-end px-3 md:px-0">
           <li>
             <NavLink

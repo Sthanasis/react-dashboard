@@ -17,7 +17,7 @@ export const useVirtualList = (options: VirtualListOptions) => {
     );
 
     return new Array(Math.max(count, 0)).fill(null);
-  }, [start, totalItems, containerHeight, itemHeight]);
+  }, [start, totalItems, containerHeight, itemHeight, renderAhead]);
 
   const handleScroll = (scrollTop: number) => {
     requestAnimationFrame(() => {

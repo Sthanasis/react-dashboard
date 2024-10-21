@@ -1,6 +1,6 @@
 import { useVirtualList } from '@/table/hooks/useVirtualList';
 import { VirtualListOptions } from '@/table/types/virtualListOptions';
-import { act, renderHook } from '@test-utilities';
+import { renderHook, act } from '@testing-library/react';
 
 describe('useVirtuallist', () => {
   beforeEach(() => {

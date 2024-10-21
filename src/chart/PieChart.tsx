@@ -4,7 +4,8 @@ import { useAppSelector } from '@/store/hooks';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useMemo } from 'react';
-import * as XLSX from 'xlsx';
+import zipcelx, { ZipCelXConfig } from 'zipcelx';
+
 const PieChart = () => {
   const disneyCharacters = useAppSelector(selectData);
   const pieChartData = useMemo(() => {
@@ -45,10 +46,19 @@ const PieChart = () => {
 
   function exportToExcel() {
     const data = pieChartData.map((data) => data.custom);
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Disney Characters');
-    XLSX.writeFile(workbook, 'disney_characters.xlsx');
+    const config: ZipCelXConfig = {
+      filename: 'disney_characters',
+      sheet: {
+        data: data.map((item) =>
+          Object.values(item).map((value) => ({
+            value,
+            type: typeof value === 'string' ? 'string' : 'number',
+          }))
+        ),
+      },
+    };
+
+    zipcelx(config);
   }
 
   return (

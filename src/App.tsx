@@ -1,134 +1,56 @@
-import { useEffect, useMemo, useState } from 'react';
-import Pagination from '@/table/components/Pagination';
-import Table from '@/table/components/Table';
-import {
-  request,
-  searchByFilter,
-  selectActiveFilter,
-  selectCharacterData,
-  selectColumns,
-  selectFilterOptions,
-  selectPaginationOptions,
-  selectRows,
-  setActiveFilter,
-  setCharacterData,
-  setCharacterId,
-  setPaginationOptions,
-  setSearch,
-  setSortingOrder,
-} from '@/store/features/characters/charactersSlice';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { getNextOrder } from './table/utilities/getNextOrder';
-import Modal from './common/components/Modal';
-import CharacterInfo from './table/components/CharacterInfo';
-import PieChart from './chart/PieChart';
-import Form from './table/components/Form';
-import Button from './common/components/Button';
+import { useEffect } from 'react';
+
+import { request } from '@/store/features/characters/charactersSlice';
+import { useAppDispatch } from '@/store/hooks';
+
+import { Outlet, NavLink, useNavigation } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartPie, faDashboard } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const dispatch = useAppDispatch();
-  const rows = useAppSelector(selectRows);
-  const cols = useAppSelector(selectColumns);
-  const { currentPage, pageSize, totalPages, totalPerPage } = useAppSelector(
-    selectPaginationOptions
-  );
-  const characterData = useAppSelector(selectCharacterData);
-  const filterOptions = useAppSelector(selectFilterOptions);
-  const activeFilter = useAppSelector(selectActiveFilter);
-
-  const [isFormVisible, setIsFormVisible] = useState(false);
-
-  const isVirtual = rows.length >= 100;
-
-  const totalRows = useMemo(
-    () => totalPages * pageSize,
-    [totalPages, pageSize]
-  );
-
+  const navigation = useNavigation();
   useEffect(() => {
     dispatch(request());
   }, []);
 
-  function handleSearch(name: string) {
-    dispatch(setSearch(name));
-  }
+  const linkClasses = (isActive: boolean) => {
+    const classes =
+      'cursor-pointer p-2  flex items-center gap-2 justify-between';
+    return isActive ? classes.concat(' bg-primary text-white') : classes;
+  };
 
-  function handleSubmit() {
-    setIsFormVisible(false);
-    dispatch(searchByFilter());
-  }
   return (
-    <div className="w-screen h-screen p-2">
-      <Table
-        rows={rows}
-        columns={cols}
-        rowHeight={50}
-        isVirtual={isVirtual}
-        onSortByName={(order) => dispatch(setSortingOrder(getNextOrder(order)))}
-        onSelectRow={(id) => dispatch(setCharacterId(id))}
-        header={
-          <Button
-            variant="text"
-            color="primary"
-            onClick={() => setIsFormVisible(true)}
-          >
-            {'Search'}
-          </Button>
-        }
-        footer={
-          <Pagination
-            label="Rows per page:"
-            page={currentPage}
-            pageSize={pageSize}
-            total={totalRows}
-            rowsPerPageOptions={totalPerPage}
-            onPageChange={(page) =>
-              dispatch(
-                setPaginationOptions({
-                  page,
-                  pageSize: pageSize,
-                })
-              )
-            }
-            onRowsPerPageChange={(pageSize) =>
-              dispatch(
-                setPaginationOptions({
-                  pageSize,
-                  page: 1,
-                })
-              )
-            }
-          />
-        }
-      />
-      <Modal
-        isOpen={!!characterData}
-        onClose={() => dispatch(setCharacterData(null))}
-      >
-        {characterData && (
-          <CharacterInfo
-            emptyMessage="no data"
-            showTitle="Shows"
-            videoGameTitle="Video Games"
-            character={characterData}
-          />
-        )}
-      </Modal>
-      <Modal
-        isOpen={!!isFormVisible}
-        onClose={() => setIsFormVisible(false)}
-      >
-        <Form
-          title="Search Disney Character"
-          submitText="Submit"
-          selectedRadio={activeFilter}
-          radioOptions={filterOptions}
-          onCheck={(filter) => dispatch(setActiveFilter(filter))}
-          onChange={handleSearch}
-          onSubmit={handleSubmit}
-        />
-      </Modal>
-      <PieChart />
+    <div className="w-screen h-screen md:flex">
+      <div className="fixed top-0 right-0">
+        {navigation.state !== 'idle' && <p>Navigation in progress...</p>}
+      </div>
+      <nav className="flex md:flex-col md:h-full bg-snow-white border border-r-gray-300 border-solid">
+        <h1 className="p-4 pl-2 text-lg font-bold">Dashboard</h1>
+        <ul className="md:py-4 w-full flex md:flex-col justify-end px-3 md:px-0">
+          <li>
+            <NavLink
+              className={({ isActive }) => linkClasses(isActive)}
+              to="/"
+            >
+              <span>Dashboard</span>
+              <FontAwesomeIcon icon={faDashboard} />
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) => linkClasses(isActive)}
+              to="/chart"
+            >
+              <span>Chart</span>
+              <FontAwesomeIcon icon={faChartPie} />
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+      <div className="p-5 w-full">
+        <Outlet />
+      </div>
     </div>
   );
 }

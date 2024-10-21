@@ -7,6 +7,7 @@ interface FormProps {
   radioOptions: FilterOption[];
   selectedRadio: Filter | null;
   submitText: string;
+  searchValue?: string;
   title: string;
   onCheck: (value: Filter | null) => void;
   onChange: (value: string) => void;
@@ -17,6 +18,7 @@ const Form = ({
   radioOptions,
   selectedRadio,
   submitText,
+  searchValue,
   title,
   onCheck,
   onChange,
@@ -29,6 +31,7 @@ const Form = ({
     >
       <h1 className="text-lg font-bold">{title}</h1>
       <Search
+        defaultValue={searchValue}
         placeholder="Search"
         onChange={onChange}
       />

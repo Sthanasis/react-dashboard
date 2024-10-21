@@ -9,6 +9,7 @@ import {
   selectFilterOptions,
   selectPaginationOptions,
   selectRows,
+  selectSearch,
   setActiveFilter,
   setCharacterData,
   setCharacterId,
@@ -33,6 +34,7 @@ function TablePage() {
   const characterData = useAppSelector(selectCharacterData);
   const filterOptions = useAppSelector(selectFilterOptions);
   const activeFilter = useAppSelector(selectActiveFilter);
+  const search = useAppSelector(selectSearch);
 
   const [isFormVisible, setIsFormVisible] = useState(false);
 
@@ -115,6 +117,7 @@ function TablePage() {
         <Form
           title="Search Disney Character"
           submitText="Submit"
+          searchValue={search}
           selectedRadio={activeFilter}
           radioOptions={filterOptions}
           onCheck={(filter) => dispatch(setActiveFilter(filter))}

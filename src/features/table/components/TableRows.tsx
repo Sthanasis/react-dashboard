@@ -1,4 +1,4 @@
-import { Row } from '@/table/types/row';
+import { Row } from '@/features/table/types/row';
 
 const TableRows = ({
   rows,
@@ -9,7 +9,15 @@ const TableRows = ({
   rowHeight?: number;
   onSelectRow?: (id: Row['id']) => void;
 }) => (
-  <>
+  <tbody
+    onClick={(e) => {
+      const target = e.target as HTMLTableElement;
+      if (!target.matches('td')) return;
+      const cell = e.target as HTMLTableCellElement;
+      const id = Number(cell.getAttribute('data-id'));
+      onSelectRow?.(id);
+    }}
+  >
     {rows.map((row, i) => (
       <tr
         key={row.id}
@@ -19,11 +27,11 @@ const TableRows = ({
         ].join(' ')}
         role="button"
         style={{ height: rowHeight ?? 'auto' }}
-        onClick={() => onSelectRow?.(row.id)}
       >
         {row.items.map((cell) => (
           <td
             key={cell.name}
+            data-id={row.id}
             className="p-2 whitespace-nowrap overflow-hidden text-ellipsis"
           >
             {cell.value}
@@ -31,7 +39,7 @@ const TableRows = ({
         ))}
       </tr>
     ))}
-  </>
+  </tbody>
 );
 
 export default TableRows;

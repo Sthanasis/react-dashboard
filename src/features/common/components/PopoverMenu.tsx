@@ -19,8 +19,11 @@ const PopoverMenu = ({
   if (direction === 'top') classList.push('bottom-full');
   else classList.push('top-0');
 
-  function optionChangeHandler(e: MouseEvent<HTMLOptionElement>) {
-    onChange(e.currentTarget.value);
+  function optionChangeHandler(e: MouseEvent<HTMLDataListElement>) {
+    const target = e.target as HTMLOptionElement;
+    if (!target.matches('option')) return;
+    const option = e.target as HTMLOptionElement;
+    onChange(option.value);
     setIsVisible(false);
   }
 
@@ -38,13 +41,15 @@ const PopoverMenu = ({
             className="fixed h-screen w-screen top-0 left-0"
             onClick={() => setIsVisible(false)}
           />
-          <datalist className={classList.join(' ')}>
+          <datalist
+            className={classList.join(' ')}
+            onClick={(e) => optionChangeHandler(e)}
+          >
             {options.map((option) => (
               <option
                 key={option}
                 value={option}
                 className="p-2 w-full cursor-pointer hover:bg-smokey-gray overflow-hidden"
-                onClick={(e) => optionChangeHandler(e)}
               >
                 {option}
               </option>

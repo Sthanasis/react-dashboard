@@ -1,4 +1,4 @@
-import { Row } from '@/table/types/row';
+import { Row } from '@/features/table/types/row';
 
 export const MOCK_ROWS: Row[] = [
   {

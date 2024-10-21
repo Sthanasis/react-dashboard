@@ -1,4 +1,4 @@
-import { SortingOrder } from '@/table/enums/sortingOrder';
+import { SortingOrder } from '@/features/table/enums/sortingOrder';
 
 export type Column<T = string> = {
   id: T;

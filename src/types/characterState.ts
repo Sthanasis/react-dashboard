@@ -1,5 +1,5 @@
 import { Filter } from '@/enums/Filter';
-import { SortingOrder } from '@/table/enums/sortingOrder';
+import { SortingOrder } from '@/features/table/enums/sortingOrder';
 import { CharacterPreview } from '@/types/characterPreview';
 import { DisneyCharacter } from '@/types/disneyCharacter';
 import { FilterOption } from '@/types/filterOption';

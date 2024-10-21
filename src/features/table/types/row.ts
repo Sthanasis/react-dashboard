@@ -1,4 +1,4 @@
-import { RowItem } from '@/table/types/rowItem';
+import { RowItem } from '@/features/table/types/rowItem';
 
 export type Row<T = string> = {
   id: number;

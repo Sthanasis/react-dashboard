@@ -1,5 +1,5 @@
-import { useVirtualList } from '@/table/hooks/useVirtualList';
-import { VirtaulListProps } from '@/table/types/virtualListProps';
+import { useVirtualList } from '@/features/table/hooks/useVirtualList';
+import { VirtaulListProps } from '@/features/table/types/virtualListProps';
 import { useMemo } from 'react';
 import TableRows from './TableRows';
 

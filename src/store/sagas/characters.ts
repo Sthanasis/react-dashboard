@@ -10,6 +10,7 @@ import {
   setCharacterId,
   setCharacters,
   setInitialData,
+  setLoading,
   setPaginationOptions,
   setTotalPages,
 } from '@/store/features/characters/charactersSlice';
@@ -17,6 +18,7 @@ import { ApiResponse } from '@/types/apiResponse';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { DisneyCharacter } from '@/types/disneyCharacter';
 import { PaginationOptions } from '@/types/paginationOptions';
+import { addNotification } from '../features/notifications/notificationsSlice';
 
 export function* fetchData(): Generator {
   try {
@@ -25,17 +27,26 @@ export function* fetchData(): Generator {
     );
     yield put(setInitialData(result));
   } catch (err) {
+    yield put(
+      addNotification({
+        header: 'Error',
+        content: 'failed to fetch',
+      })
+    );
     console.error(err);
+  } finally {
+    yield put(setLoading(false));
   }
 }
 
-export function* fetchBySearch(): Generator {
+export function* fetchByQuery(): Generator {
   const { currentPage, pageSize }: PaginationOptions = yield select(
     selectPaginationOptions
   );
   const search = yield select(selectSearch);
   const filter = yield select(selectActiveFilter);
   try {
+    yield put(setLoading(true));
     const result: ApiResponse<DisneyCharacter[] | DisneyCharacter> = yield call(
       charactersService.fetchAllCharactersByQuery,
       currentPage,
@@ -49,7 +60,15 @@ export function* fetchBySearch(): Generator {
     yield put(setCharacters(payload));
     yield put(setTotalPages(result.info.totalPages));
   } catch (err) {
+    yield put(
+      addNotification({
+        header: 'Error',
+        content: 'failed to fetch',
+      })
+    );
     console.error(err);
+  } finally {
+    yield put(setLoading(false));
   }
 }
 export function* fetchByCharacterId(
@@ -64,6 +83,12 @@ export function* fetchByCharacterId(
     const result = yield call(charactersService.fetchCharacterById, id);
     yield put(setCharacterData(result.data));
   } catch (err) {
+    yield put(
+      addNotification({
+        header: 'Error',
+        content: 'failed to fetch',
+      })
+    );
     console.error(err);
   }
 }
@@ -73,11 +98,11 @@ export function* watchFetchCharacters() {
 }
 
 export function* watchPaginationOptions() {
-  yield takeEvery(setPaginationOptions, fetchBySearch);
+  yield takeEvery(setPaginationOptions, fetchByQuery);
 }
 
 export function* watchSearchChange() {
-  yield takeEvery(searchByFilter, fetchBySearch);
+  yield takeEvery(searchByFilter, fetchByQuery);
 }
 
 export function* watchCharacterId() {

@@ -1,4 +1,4 @@
-import { useDebounceListCleanup } from '@/common/hooks/useDebounceListCleanup';
+import { useDebounceListCleanup } from '@/features/common/hooks/useDebounceListCleanup';
 import { renderHook } from '@testing-library/react';
 vi.useFakeTimers();
 vi.spyOn(global, 'setTimeout');

@@ -1,6 +1,6 @@
 import { Filter } from '@/enums/Filter';
-import { SortingOrder } from '@/table/enums/sortingOrder';
-import { Column } from '@/table/types/column';
+import { SortingOrder } from '@/features/table/enums/sortingOrder';
+import { Column } from '@/features/table/types/column';
 import { mapTableRows } from '@/utilities/mapTableRows';
 import { sortByName } from '@/utilities/sortByName';
 import { ApiResponse } from '@/types/apiResponse';
@@ -100,6 +100,9 @@ export const charactersSlice = createSlice({
       state.activeFilter = action.payload;
     },
     searchByFilter() {},
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.loading = action.payload;
+    },
   },
   selectors: {
     selectRows: createSelector(
@@ -139,6 +142,7 @@ export const {
   setCharacterId,
   setActiveFilter,
   searchByFilter,
+  setLoading,
 } = charactersSlice.actions;
 
 export const {

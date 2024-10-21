@@ -1,6 +1,6 @@
-import Button from '@/common/components/Button';
+import Button from '@/features/common/components/Button';
 import { Filter } from '@/enums/Filter';
-import Search from '@/table/components/Search';
+import Search from '@/features/table/components/Search';
 import { FilterOption } from '@/types/filterOption';
 
 interface FormProps {

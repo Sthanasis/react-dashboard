@@ -1,5 +1,5 @@
-import Button from '@/common/components/Button';
-import PopoverMenu from '@/common/components/PopoverMenu';
+import Button from '@/features/common/components/Button';
+import PopoverMenu from '@/features/common/components/PopoverMenu';
 import {
   faAngleLeft,
   faAngleRight,
@@ -14,6 +14,9 @@ interface PaginationProps {
   rowsPerPageOptions: number[];
   total: number;
   label: string;
+  pageIndicator?: string;
+  disabledStart: boolean;
+  disabledEnd: boolean;
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rowsPerPage: number) => void;
 }
@@ -26,11 +29,10 @@ const Pagination = ({
   rowsPerPageOptions,
   total,
   label,
+  pageIndicator,
+  disabledStart,
+  disabledEnd,
 }: PaginationProps) => {
-  const startIndicator = pageSize * (page - 1) + 1;
-  let endIndicator = pageSize * page;
-  endIndicator = total < endIndicator ? total : endIndicator;
-  const pageIndicator = `${startIndicator} - ${endIndicator} / ${total}`;
   return (
     <div className="flex justify-center items-center flex-wrap md:justify-end gap-3 px-4 py-2 border-t">
       <div className="flex items-center gap-2">
@@ -46,7 +48,7 @@ const Pagination = ({
         <Button
           variant="text"
           rounded
-          disabled={page === 1}
+          disabled={disabledStart}
           onClick={() => onPageChange(1)}
         >
           <FontAwesomeIcon
@@ -58,7 +60,7 @@ const Pagination = ({
         <Button
           variant="text"
           rounded
-          disabled={page === 1}
+          disabled={disabledStart}
           onClick={() => onPageChange(page - 1)}
         >
           <FontAwesomeIcon
@@ -70,7 +72,7 @@ const Pagination = ({
         <Button
           variant="text"
           rounded
-          disabled={endIndicator === total}
+          disabled={disabledEnd}
           onClick={() => onPageChange(page + 1)}
         >
           <FontAwesomeIcon
@@ -82,7 +84,7 @@ const Pagination = ({
         <Button
           variant="text"
           rounded
-          disabled={endIndicator === total}
+          disabled={disabledEnd}
           onClick={() => onPageChange(Math.ceil(total / pageSize))}
         >
           <FontAwesomeIcon

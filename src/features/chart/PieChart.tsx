@@ -1,4 +1,4 @@
-import Button from '@/common/components/Button';
+import Button from '@/features/common/components/Button';
 import { selectData } from '@/store/features/characters/charactersSlice';
 import { useAppSelector } from '@/store/hooks';
 import Highcharts from 'highcharts';

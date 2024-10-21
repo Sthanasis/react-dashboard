@@ -9,14 +9,14 @@ const router = createHashRouter([
       {
         index: true,
         async lazy() {
-          const Table = await import('@/table/components/TablePage');
+          const Table = await import('@/features/table/components/TablePage');
           return { Component: Table.default };
         },
       },
       {
         path: 'chart',
         async lazy() {
-          const Chart = await import('@/chart/PieChart');
+          const Chart = await import('@/features/chart/PieChart');
           return { Component: Chart.default };
         },
       },

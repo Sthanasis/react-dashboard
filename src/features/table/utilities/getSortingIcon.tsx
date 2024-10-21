@@ -1,4 +1,4 @@
-import { SortingOrder } from '@/table/enums/sortingOrder';
+import { SortingOrder } from '@/features/table/enums/sortingOrder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSort,

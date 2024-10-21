@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import Pagination from '@/table/components/Pagination';
-import Table from '@/table/components/Table';
+import Pagination from '@/features/table/components/Pagination';
+import Table from '@/features/table/components/Table';
 import {
   searchByFilter,
   selectActiveFilter,
@@ -18,11 +18,11 @@ import {
   setSortingOrder,
 } from '@/store/features/characters/charactersSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { getNextOrder } from '@/table/utilities/getNextOrder';
-import Modal from '@/common/components/Modal';
-import CharacterInfo from '@/table/components/CharacterInfo';
-import Form from '@/table/components/Form';
-import Button from '@/common/components/Button';
+import { getNextOrder } from '@/features/table/utilities/getNextOrder';
+import Modal from '@/features/common/components/Modal';
+import CharacterInfo from '@/features/table/components/CharacterInfo';
+import Form from '@/features/table/components/Form';
+import Button from '@/features/common/components/Button';
 
 function TablePage() {
   const dispatch = useAppDispatch();
@@ -35,6 +35,7 @@ function TablePage() {
   const filterOptions = useAppSelector(selectFilterOptions);
   const activeFilter = useAppSelector(selectActiveFilter);
   const search = useAppSelector(selectSearch);
+  const loading = useAppSelector((state) => state.characters.loading);
 
   const [isFormVisible, setIsFormVisible] = useState(false);
 
@@ -53,6 +54,12 @@ function TablePage() {
     setIsFormVisible(false);
     dispatch(searchByFilter());
   }
+
+  const startIndicator = pageSize * (currentPage - 1) + 1;
+  let endIndicator = pageSize * currentPage;
+  endIndicator = totalRows < endIndicator ? totalRows : endIndicator;
+  const pageIndicator = `${startIndicator} - ${endIndicator} / ${totalRows}`;
+
   return (
     <>
       <Table
@@ -77,6 +84,9 @@ function TablePage() {
             page={currentPage}
             pageSize={pageSize}
             total={totalRows}
+            pageIndicator={!loading ? pageIndicator : ''}
+            disabledStart={currentPage === 1}
+            disabledEnd={endIndicator === totalRows}
             rowsPerPageOptions={totalPerPage}
             onPageChange={(page) =>
               dispatch(

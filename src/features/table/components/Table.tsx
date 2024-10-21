@@ -1,6 +1,6 @@
-import Button from '@/common/components/Button';
-import { getSortingIcon } from '@/table/utilities/getSortingIcon';
-import { Column } from '@/table/types/column';
+import Button from '@/features/common/components/Button';
+import { getSortingIcon } from '@/features/table/utilities/getSortingIcon';
+import { Column } from '@/features/table/types/column';
 import { ReactNode } from 'react';
 import { VirtaulListProps } from '../types/virtualListProps';
 import VirtualTable from './VirtualTable';

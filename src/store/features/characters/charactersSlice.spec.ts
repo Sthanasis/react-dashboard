@@ -1,4 +1,4 @@
-import { SortingOrder } from '@/table/enums/sortingOrder';
+import { SortingOrder } from '@/features/table/enums/sortingOrder';
 import reducer, {
   initialState,
   request,
@@ -21,6 +21,7 @@ import reducer, {
   selectData,
   selectFilterOptions,
   selectActiveFilter,
+  setLoading,
 } from './charactersSlice';
 import { MOCK_API_RESPONSE } from '@/mocks/mockApiResponse';
 import { Filter } from '@/enums/Filter';
@@ -132,6 +133,10 @@ describe('Characters slice', () => {
     test('setActiveFilter', () => {
       const result = reducer(initialState, searchByFilter());
       expect(result).toMatchObject(initialState);
+    });
+    test('setLoading', () => {
+      const result = reducer(initialState, setLoading(true));
+      expect(result).toMatchObject({ ...initialState, loading: true });
     });
   });
   describe('selectors', () => {

@@ -1,7 +1,7 @@
 import { Filter } from '@/enums/Filter';
 import { ApiResponse } from '@/types/apiResponse';
 
-const BASE_URL = 'https://api.disneyapi.dev/character';
+export const BASE_URL = 'https://api.disneyapi.dev/character';
 
 async function fetchAllCharacters(): Promise<ApiResponse> {
   const response = await fetch(BASE_URL);

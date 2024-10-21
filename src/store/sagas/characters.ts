@@ -29,26 +29,6 @@ export function* fetchData(): Generator {
   }
 }
 
-export function* fetchByPage(
-  action: PayloadAction<{ pageSize: number; page: number }>
-): Generator {
-  const { page, pageSize } = action.payload;
-  const search = yield select(selectSearch);
-  const filter = yield select(selectActiveFilter);
-  try {
-    const result: ApiResponse = yield call(
-      charactersService.fetchAllCharactersByQuery,
-      page,
-      pageSize,
-      { query: filter, value: search }
-    );
-    yield put(setCharacters(result));
-    yield put(setTotalPages(result.info.totalPages));
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 export function* fetchBySearch(): Generator {
   const { currentPage, pageSize }: PaginationOptions = yield select(
     selectPaginationOptions
@@ -93,7 +73,7 @@ export function* watchFetchCharacters() {
 }
 
 export function* watchPaginationOptions() {
-  yield takeEvery(setPaginationOptions, fetchByPage);
+  yield takeEvery(setPaginationOptions, fetchBySearch);
 }
 
 export function* watchSearchChange() {

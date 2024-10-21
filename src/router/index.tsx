@@ -16,7 +16,7 @@ const router = createHashRouter([
       {
         path: 'chart',
         async lazy() {
-          const Chart = await import('@/chart/PieChart');
+          const Chart = await import('@/features/chart/PieChart');
           return { Component: Chart.default };
         },
       },

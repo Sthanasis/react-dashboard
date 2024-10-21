@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { Outlet, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie, faDashboard } from '@fortawesome/free-solid-svg-icons';
-import Progress from './common/components/Progress';
+import Progress from '@/features/common/components/Progress';
 
 function App() {
   const dispatch = useAppDispatch();

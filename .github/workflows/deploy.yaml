@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [production]
+    branches: [main]
 
 jobs:
   test:
@@ -39,12 +39,8 @@ jobs:
       - name: build
         run: npm run build
       - name: deploy
-        env:
-          GIT_NAME: ${{ secrets.GIT_NAME }}
-          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
-          GIT_REMOTE: ${{ secrets.GIT_REMOTE }}
         run: |
-          git config --global user.name "$GIT_NAME"
-          git config --global user.email "$GIT_EMAIL"
-          git remote add ${{ GIT_REMOTE }}
+          git config --global user.name ${{ secrets.GIT_NAME }}
+          git config --global user.email ${{ secrets.GIT_EMAIL }}
+          git remote add ${{ secrets.GIT_REMOTE }}
           npm run deploy

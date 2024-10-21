@@ -10,6 +10,7 @@ import {
   setCharacterId,
   setCharacters,
   setInitialData,
+  setLoading,
   setPaginationOptions,
   setTotalPages,
 } from '@/store/features/characters/charactersSlice';
@@ -26,16 +27,19 @@ export function* fetchData(): Generator {
     yield put(setInitialData(result));
   } catch (err) {
     console.error(err);
+  } finally {
+    yield put(setLoading(false));
   }
 }
 
-export function* fetchBySearch(): Generator {
+export function* fetchByQuery(): Generator {
   const { currentPage, pageSize }: PaginationOptions = yield select(
     selectPaginationOptions
   );
   const search = yield select(selectSearch);
   const filter = yield select(selectActiveFilter);
   try {
+    yield put(setLoading(true));
     const result: ApiResponse<DisneyCharacter[] | DisneyCharacter> = yield call(
       charactersService.fetchAllCharactersByQuery,
       currentPage,
@@ -50,6 +54,8 @@ export function* fetchBySearch(): Generator {
     yield put(setTotalPages(result.info.totalPages));
   } catch (err) {
     console.error(err);
+  } finally {
+    yield put(setLoading(false));
   }
 }
 export function* fetchByCharacterId(
@@ -73,11 +79,11 @@ export function* watchFetchCharacters() {
 }
 
 export function* watchPaginationOptions() {
-  yield takeEvery(setPaginationOptions, fetchBySearch);
+  yield takeEvery(setPaginationOptions, fetchByQuery);
 }
 
 export function* watchSearchChange() {
-  yield takeEvery(searchByFilter, fetchBySearch);
+  yield takeEvery(searchByFilter, fetchByQuery);
 }
 
 export function* watchCharacterId() {

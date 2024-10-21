@@ -35,6 +35,7 @@ function TablePage() {
   const filterOptions = useAppSelector(selectFilterOptions);
   const activeFilter = useAppSelector(selectActiveFilter);
   const search = useAppSelector(selectSearch);
+  const loading = useAppSelector((state) => state.characters.loading);
 
   const [isFormVisible, setIsFormVisible] = useState(false);
 
@@ -53,6 +54,12 @@ function TablePage() {
     setIsFormVisible(false);
     dispatch(searchByFilter());
   }
+
+  const startIndicator = pageSize * (currentPage - 1) + 1;
+  let endIndicator = pageSize * currentPage;
+  endIndicator = totalRows < endIndicator ? totalRows : endIndicator;
+  const pageIndicator = `${startIndicator} - ${endIndicator} / ${totalRows}`;
+
   return (
     <>
       <Table
@@ -77,6 +84,9 @@ function TablePage() {
             page={currentPage}
             pageSize={pageSize}
             total={totalRows}
+            pageIndicator={!loading ? pageIndicator : ''}
+            disabledStart={currentPage === 1}
+            disabledEnd={endIndicator === totalRows}
             rowsPerPageOptions={totalPerPage}
             onPageChange={(page) =>
               dispatch(

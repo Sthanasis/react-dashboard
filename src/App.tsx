@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
 
 import { request } from '@/store/features/characters/charactersSlice';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
-import { Outlet, NavLink, useNavigation } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie, faDashboard } from '@fortawesome/free-solid-svg-icons';
+import Progress from './common/components/Progress';
 
 function App() {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
+  const loading = useAppSelector((state) => state.characters.loading);
   useEffect(() => {
     dispatch(request());
   }, [dispatch]);
@@ -22,9 +23,6 @@ function App() {
 
   return (
     <div className="w-screen h-screen md:flex">
-      <div className="fixed top-0 right-0">
-        {navigation.state !== 'idle' && <p>Navigation in progress...</p>}
-      </div>
       <nav className="flex md:flex-col md:h-full bg-snow-white border border-r-gray-300 border-solid">
         <h1 className="p-2 pl-2 text-lg font-bold">Dashboard</h1>
         <ul className="md:py-4 w-full flex md:flex-col justify-end px-3 md:px-0">
@@ -48,8 +46,11 @@ function App() {
           </li>
         </ul>
       </nav>
-      <div className="p-5 w-full">
-        <Outlet />
+      <div className="w-full">
+        {loading && <Progress />}
+        <div className="p-5 w-full">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

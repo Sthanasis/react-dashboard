@@ -100,6 +100,9 @@ export const charactersSlice = createSlice({
       state.activeFilter = action.payload;
     },
     searchByFilter() {},
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.loading = action.payload;
+    },
   },
   selectors: {
     selectRows: createSelector(
@@ -139,6 +142,7 @@ export const {
   setCharacterId,
   setActiveFilter,
   searchByFilter,
+  setLoading,
 } = charactersSlice.actions;
 
 export const {

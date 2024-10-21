@@ -12,7 +12,7 @@ function App() {
   const navigation = useNavigation();
   useEffect(() => {
     dispatch(request());
-  }, []);
+  }, [dispatch]);
 
   const linkClasses = (isActive: boolean) => {
     const classes =

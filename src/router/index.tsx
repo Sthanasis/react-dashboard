@@ -1,7 +1,7 @@
 import App from '@/App';
 import { createHashRouter } from 'react-router-dom';
 
-export default createHashRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <App />,
@@ -23,3 +23,4 @@ export default createHashRouter([
     ],
   },
 ]);
+export default router;

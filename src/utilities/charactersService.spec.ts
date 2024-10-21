@@ -12,7 +12,7 @@ describe('CharactersService', () => {
     const fetchSpy = vi.spyOn(window, 'fetch');
     const page = 1;
     const size = 2;
-    let query = `?page=${page}&pageSize=${size}`;
+    const query = `?page=${page}&pageSize=${size}`;
     service.fetchAllCharactersByQuery(page, size);
     expect(fetchSpy).toHaveBeenCalledWith(BASE_URL + query);
   });
@@ -21,7 +21,7 @@ describe('CharactersService', () => {
     const page = 1;
     const size = 2;
     const search = { query: Filter.name, value: 'test' };
-    let query = `?page=${page}&pageSize=${size}&${Filter.name}=${search.value}`;
+    const query = `?page=${page}&pageSize=${size}&${Filter.name}=${search.value}`;
     service.fetchAllCharactersByQuery(page, size, search);
     expect(fetchSpy).toHaveBeenCalledWith(BASE_URL + query);
   });

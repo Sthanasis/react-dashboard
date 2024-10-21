@@ -1,5 +1,5 @@
 import { DisneyCharacter } from '@/types/disneyCharacter';
-import { Column } from '../types/column';
+import { Column } from '../table/types/column';
 import { CharacterKey } from '@/types/character';
 
 export function mapTableRows(

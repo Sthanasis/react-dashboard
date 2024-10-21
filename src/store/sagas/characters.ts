@@ -16,7 +16,7 @@ import {
 import { ApiResponse } from '@/types/apiResponse';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { DisneyCharacter } from '@/types/disneyCharacter';
-import { PaginationOptions } from '../features/characters/types/paginationOptions';
+import { PaginationOptions } from '@/types/paginationOptions';
 
 export function* fetchData(): Generator {
   try {

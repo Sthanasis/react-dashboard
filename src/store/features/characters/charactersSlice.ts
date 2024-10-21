@@ -1,16 +1,16 @@
 import { Filter } from '@/enums/Filter';
 import { SortingOrder } from '@/table/enums/sortingOrder';
 import { Column } from '@/table/types/column';
-import { mapTableRows } from '@/table/utilities/mapTableRows';
-import { sortByName } from '@/table/utilities/sortByName';
+import { mapTableRows } from '@/utilities/mapTableRows';
+import { sortByName } from '@/utilities/sortByName';
 import { ApiResponse } from '@/types/apiResponse';
 import { CharacterKey } from '@/types/character';
 import { DisneyCharacter } from '@/types/disneyCharacter';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { CharactersState } from './types/characterState';
+import { CharactersState } from '@/types/characterState';
 
-const columns: Column<CharacterKey>[] = [
+export const columns: Column<CharacterKey>[] = [
   { id: 'name', value: 'Name', sortingOrder: SortingOrder.default },
   {
     id: 'participatingShows',
@@ -27,7 +27,7 @@ const columns: Column<CharacterKey>[] = [
   },
 ];
 
-const initialState: CharactersState = {
+export const initialState: CharactersState = {
   data: [],
   search: '',
   loading: false,
@@ -37,8 +37,6 @@ const initialState: CharactersState = {
     { value: null, label: 'None' },
   ],
   activeFilter: null,
-  characters: [],
-  tableColumns: columns,
   paginationOptions: {
     pageSize: 0,
     currentPage: 1,
@@ -58,16 +56,12 @@ export const charactersSlice = createSlice({
       state.loading = true;
     },
     setInitialData(state, action: PayloadAction<ApiResponse>) {
-      state.characters = mapTableRows(action.payload.data, state.tableColumns);
       state.data = action.payload.data;
       state.paginationOptions.pageSize = action.payload.info.count;
       state.paginationOptions.totalPages = action.payload.info.totalPages;
     },
     setCharacters(state, action: PayloadAction<ApiResponse>) {
-      const characters = mapTableRows(action.payload.data, state.tableColumns);
       state.data = action.payload.data;
-      sortByName(characters, state.order);
-      state.characters = characters;
     },
     setPaginationOptions(
       state,
@@ -87,26 +81,17 @@ export const charactersSlice = createSlice({
     },
     setSortingOrder(state, action: PayloadAction<SortingOrder>) {
       state.order = action.payload;
-      const result = sortByName<CharacterKey>(state.characters, state.order);
-      state.characters = result ?? mapTableRows(state.data, state.tableColumns);
-      state.tableColumns = state.tableColumns.map((column) =>
-        column.id === 'name'
-          ? { ...column, sortingOrder: action.payload }
-          : column
-      );
     },
     setCharacterData(state, action: PayloadAction<DisneyCharacter | null>) {
       const character = action.payload;
-      if (!character) {
-        state.characterData = null;
-        return;
-      }
-      state.characterData = {
-        name: character.name,
-        image: character.imageUrl,
-        tvShows: character.tvShows,
-        videoGames: character.videoGames,
-      };
+      state.characterData = character
+        ? {
+            name: character.name,
+            image: character.imageUrl,
+            tvShows: character.tvShows,
+            videoGames: character.videoGames,
+          }
+        : null;
     },
     setCharacterId(state, action: PayloadAction<number | null>) {
       state.characterId = action.payload;
@@ -117,9 +102,22 @@ export const charactersSlice = createSlice({
     searchByFilter() {},
   },
   selectors: {
-    selectCharacters: (state) => state.characters,
-    selectRows: (state) => state.characters,
-    selectColumns: (state) => state.tableColumns,
+    selectRows: createSelector(
+      (state: CharactersState) => state.data,
+      (state: CharactersState) => state.order,
+      (data, order) => {
+        const tableRows = mapTableRows(data, columns);
+        if (order !== SortingOrder.default) sortByName(tableRows, order);
+        return tableRows;
+      }
+    ),
+    selectColumns: createSelector(
+      (state: CharactersState) => state.order,
+      (order) =>
+        columns.map((column) =>
+          column.id === 'name' ? { ...column, sortingOrder: order } : column
+        )
+    ),
     selectPaginationOptions: (state) => state.paginationOptions,
     selectSearch: (state) => state.search,
     selectCharacterData: (state) => state.characterData,

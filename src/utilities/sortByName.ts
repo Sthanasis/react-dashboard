@@ -1,5 +1,5 @@
-import { SortingOrder } from '../enums/sortingOrder';
-import { Row } from '../types/row';
+import { SortingOrder } from '../table/enums/sortingOrder';
+import { Row } from '../table/types/row';
 
 const compare = (a: string | number, b: string | number) => {
   if (a > b) return 1;

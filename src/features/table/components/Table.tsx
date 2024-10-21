@@ -82,12 +82,10 @@ const Table = ({
                 style={{ height }}
               >
                 <table>
-                  <tbody>
-                    <TableRows
-                      rows={rows}
-                      onSelectRow={onSelectRow}
-                    />
-                  </tbody>
+                  <TableRows
+                    rows={rows}
+                    onSelectRow={onSelectRow}
+                  />
                 </table>
               </div>
             )}

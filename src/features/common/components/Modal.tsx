@@ -16,10 +16,10 @@ const Modal = ({ children, isOpen, onClose }: ModalProps) => {
     createPortal(
       <>
         <div
-          className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-level-40"
+          className="fixed top-0 left-0 w-screen h-full bg-black bg-opacity-level-40"
           onClick={onClose}
         />
-        <div className="w-screen overflow-hidden h-screen sm:max-w-[640px] sm:h-fit  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-snow-white py-4 rounded-md">
+        <div className="w-screen h-full overflow-hidden sm:max-w-[640px] sm:h-fit fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-snow-white py-4 rounded-md">
           <div className="flex justify-end w-full px-4">
             <Button
               variant="text"

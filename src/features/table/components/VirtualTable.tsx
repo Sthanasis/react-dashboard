@@ -35,13 +35,11 @@ const VirtualTable = ({
             transform: `translate3d(0px,${offsetY}px,0px)`,
           }}
         >
-          <tbody>
-            <TableRows
-              rows={renderedRows}
-              rowHeight={rowHeight}
-              onSelectRow={onSelectRow}
-            />
-          </tbody>
+          <TableRows
+            rows={renderedRows}
+            rowHeight={rowHeight}
+            onSelectRow={onSelectRow}
+          />
         </table>
       </div>
     </div>

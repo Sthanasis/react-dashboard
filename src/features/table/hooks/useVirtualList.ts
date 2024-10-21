@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { VirtualListOptions } from '@/table/types/virtualListOptions';
+import { VirtualListOptions } from '@/features/table/types/virtualListOptions';
 
 export const useVirtualList = (options: VirtualListOptions) => {
   const { itemHeight, containerHeight, renderAhead, totalItems } = options;

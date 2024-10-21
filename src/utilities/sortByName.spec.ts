@@ -1,4 +1,4 @@
-import { SortingOrder } from '@/table/enums/sortingOrder';
+import { SortingOrder } from '@/features/table/enums/sortingOrder';
 import { sortByName } from './sortByName';
 import { MOCK_ROWS } from '@/mocks/mockRows';
 describe('sortByName', () => {

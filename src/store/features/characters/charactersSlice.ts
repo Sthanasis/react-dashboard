@@ -1,6 +1,6 @@
 import { Filter } from '@/enums/Filter';
-import { SortingOrder } from '@/table/enums/sortingOrder';
-import { Column } from '@/table/types/column';
+import { SortingOrder } from '@/features/table/enums/sortingOrder';
+import { Column } from '@/features/table/types/column';
 import { mapTableRows } from '@/utilities/mapTableRows';
 import { sortByName } from '@/utilities/sortByName';
 import { ApiResponse } from '@/types/apiResponse';

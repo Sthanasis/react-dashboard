@@ -11,6 +11,7 @@ interface ButtonProps {
   color?: ButtonColor;
   rounded?: boolean;
   disabled?: boolean;
+  disableRipple?: boolean;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -21,6 +22,7 @@ const Button = ({
   color = 'default',
   rounded = false,
   disabled,
+  disableRipple,
   onClick,
 }: ButtonProps) => {
   const baseClasses =
@@ -65,7 +67,7 @@ const Button = ({
       onClick={onClick}
     >
       {children}
-      <RippleContainer />
+      {!disableRipple && <RippleContainer />}
     </button>
   );
 };

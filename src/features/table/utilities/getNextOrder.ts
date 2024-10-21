@@ -1,4 +1,4 @@
-import { SortingOrder } from '@/table/enums/sortingOrder';
+import { SortingOrder } from '@/features/table/enums/sortingOrder';
 
 export function getNextOrder(order: SortingOrder) {
   return {

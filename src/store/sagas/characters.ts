@@ -18,6 +18,7 @@ import { ApiResponse } from '@/types/apiResponse';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { DisneyCharacter } from '@/types/disneyCharacter';
 import { PaginationOptions } from '@/types/paginationOptions';
+import { addNotification } from '../features/notifications/notificationsSlice';
 
 export function* fetchData(): Generator {
   try {
@@ -26,6 +27,12 @@ export function* fetchData(): Generator {
     );
     yield put(setInitialData(result));
   } catch (err) {
+    yield put(
+      addNotification({
+        header: 'Error',
+        content: 'failed to fetch',
+      })
+    );
     console.error(err);
   } finally {
     yield put(setLoading(false));
@@ -53,6 +60,12 @@ export function* fetchByQuery(): Generator {
     yield put(setCharacters(payload));
     yield put(setTotalPages(result.info.totalPages));
   } catch (err) {
+    yield put(
+      addNotification({
+        header: 'Error',
+        content: 'failed to fetch',
+      })
+    );
     console.error(err);
   } finally {
     yield put(setLoading(false));
@@ -70,6 +83,12 @@ export function* fetchByCharacterId(
     const result = yield call(charactersService.fetchCharacterById, id);
     yield put(setCharacterData(result.data));
   } catch (err) {
+    yield put(
+      addNotification({
+        header: 'Error',
+        content: 'failed to fetch',
+      })
+    );
     console.error(err);
   }
 }

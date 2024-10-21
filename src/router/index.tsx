@@ -9,7 +9,7 @@ const router = createHashRouter([
       {
         index: true,
         async lazy() {
-          const Table = await import('@/table/components/TablePage');
+          const Table = await import('@/features/table/components/TablePage');
           return { Component: Table.default };
         },
       },

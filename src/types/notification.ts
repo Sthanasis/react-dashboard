@@ -1,6 +1,9 @@
-export type Notification = {
-  id: number;
-  type: 'success' | 'error' | 'info';
+export interface BaseNotification {
+  type?: 'error';
   header: string;
   content: string;
-};
+}
+
+export interface Notification extends BaseNotification {
+  id: number;
+}

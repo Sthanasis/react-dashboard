@@ -1,5 +1,5 @@
 import { MouseEvent, useState } from 'react';
-import Button from '@/common/components/Button';
+import Button from '@/features/common/components/Button';
 
 const PopoverMenu = ({
   label,

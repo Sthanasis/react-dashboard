@@ -1,5 +1,5 @@
-import Button from '@/common/components/Button';
-import PopoverMenu from '@/common/components/PopoverMenu';
+import Button from '@/features/common/components/Button';
+import PopoverMenu from '@/features/common/components/PopoverMenu';
 import {
   faAngleLeft,
   faAngleRight,

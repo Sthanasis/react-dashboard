@@ -1,4 +1,4 @@
-import { TableRowsProps } from '@/table/types/tableRowProps';
+import { TableRowsProps } from '@/features/table/types/tableRowProps';
 
 export interface VirtaulListProps extends TableRowsProps {
   height?: number;

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import Pagination from '@/table/components/Pagination';
-import Table from '@/table/components/Table';
+import Pagination from '@/features/table/components/Pagination';
+import Table from '@/features/table/components/Table';
 import {
   searchByFilter,
   selectActiveFilter,
@@ -18,11 +18,11 @@ import {
   setSortingOrder,
 } from '@/store/features/characters/charactersSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { getNextOrder } from '@/table/utilities/getNextOrder';
-import Modal from '@/common/components/Modal';
-import CharacterInfo from '@/table/components/CharacterInfo';
-import Form from '@/table/components/Form';
-import Button from '@/common/components/Button';
+import { getNextOrder } from '@/features/table/utilities/getNextOrder';
+import Modal from '@/features/common/components/Modal';
+import CharacterInfo from '@/features/table/components/CharacterInfo';
+import Form from '@/features/table/components/Form';
+import Button from '@/features/common/components/Button';
 
 function TablePage() {
   const dispatch = useAppDispatch();

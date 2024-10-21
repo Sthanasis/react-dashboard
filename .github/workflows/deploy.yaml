@@ -42,4 +42,5 @@ jobs:
         run: |
           git config --global user.name ${{ secrets.GIT_NAME }}
           git config --global user.email ${{ secrets.GIT_EMAIL }}
+          git remote set-url origin ${{ secrets.GIT_REMOTE }}
           npm run deploy

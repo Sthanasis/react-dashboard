@@ -23,6 +23,6 @@ export default defineConfig({
     },
   },
   build: {
-    assetsDir: 'public',
+    assetsDir: 'assets',
   },
 });

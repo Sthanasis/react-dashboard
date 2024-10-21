@@ -1,8 +1,6 @@
 # Disney Characters Dashboard
 
-## About
-
-A react app that displays disney characters fetched from `https://disneyapi.dev/`
+A react app that displays disney characters using the `https://disneyapi.dev/` api
 
 ## Prerequisites
 
@@ -28,8 +26,8 @@ The app is deployed to github pages and an automation release process is in plac
 
 - add commits to main
 - create a pull request to production branch
-- merge
+- merge the pull request
 
-## Project link
+## Project deploy URL
 
 https://sthanasis.github.io/react-dashboard/

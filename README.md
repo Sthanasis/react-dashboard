@@ -4,29 +4,44 @@ A react app that displays disney characters using the `https://disneyapi.dev/` a
 
 ## Prerequisites
 
-node.js version 20.18.0
+- node v20.18.0
+- npm v10.8.2
 
-## Getting Started
+## Project setup
 
-clone repo
+```
+npm ci
+```
 
-- setup with `npm ci`
-- run with `npm run dev`
-- run tests with `npm run test`
-- build with `npm run build`
-- run linter with `npm run lint`
+### Compiles and hot reloads for development
 
-## Linting
+```
+npm run dev
 
-Lint rules are applied in `eslint.config.js` file. Make sure to add all the necessary extensions to your IDE.
+You may access the local dev environment on http://localhost:5173
+```
+
+### Runs tests and watces for latest changes
+
+```
+npm run test
+```
+
+### ESLint rules
+
+Most rules are being applied via `eslint.config.js` file. Make sure to use an IDE plugin to automatically respect and format the needed files. You can also run the linter.
+
+```
+npm run lint
+```
 
 ## Release Process
 
 The app is deployed to github pages and an automation release process is in place. To trigger it:
 
-- add commits to main
-- create a pull request to production branch
-- merge the pull request
+- commit on main branch.
+- create a pull request to the production branch.
+- merge the pull request.
 
 ## Project deploy URL
 

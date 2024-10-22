@@ -17,7 +17,6 @@ npm ci
 
 ```
 npm run dev
-
 ```
 
 You may access the local dev environment on http://localhost:5173
